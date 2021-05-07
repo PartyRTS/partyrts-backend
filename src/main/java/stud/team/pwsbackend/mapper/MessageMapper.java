@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import stud.team.pwsbackend.domain.Message;
 import stud.team.pwsbackend.dto.MessageDto;
-import stud.team.pwsbackend.entity.Message;
 
 import java.util.List;
 

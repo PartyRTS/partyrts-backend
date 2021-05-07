@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.dto.UserDto;
-import stud.team.pwsbackend.entity.User;
 
 import java.util.List;
 

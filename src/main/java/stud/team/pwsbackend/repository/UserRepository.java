@@ -2,7 +2,7 @@ package stud.team.pwsbackend.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import stud.team.pwsbackend.entity.User;
+import stud.team.pwsbackend.domain.User;
 
 import java.util.Optional;
 

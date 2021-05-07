@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import stud.team.pwsbackend.domain.GlobalRole;
 import stud.team.pwsbackend.dto.GlobalRoleDto;
-import stud.team.pwsbackend.entity.GlobalRole;
 
 import java.util.List;
 
