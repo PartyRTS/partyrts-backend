@@ -35,11 +35,23 @@ public class Stream {
     @JoinColumn(name = "fk_playlist")
     private Playlist playlist;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_user")
+    private User user;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "stream_has_category", joinColumns = @JoinColumn(name = "stream_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "stream_has_user", joinColumns = @JoinColumn(name = "stream_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users = new ArrayList<>();
+
     @OneToMany(mappedBy = "stream")
     private List<InsertVideos> insertVideos = new ArrayList<InsertVideos>();
+
+    @OneToMany(mappedBy = "stream")
+    private List<Message> messages = new ArrayList<Message>();
 }

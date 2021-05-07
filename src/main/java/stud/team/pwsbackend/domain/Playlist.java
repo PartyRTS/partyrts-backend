@@ -19,6 +19,10 @@ public class Playlist {
     @Column(name = "title")
     private String title;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_user")
+    private User user;
+
     @OneToMany(mappedBy = "playlist")
     private List<Stream> streams = new ArrayList<Stream>();
 

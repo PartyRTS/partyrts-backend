@@ -25,6 +25,10 @@ public class Video {
     @Column(name = "preview_url")
     private String previewUrl;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_user")
+    private User user;
+
     @OneToMany(mappedBy = "addVideo")
     private List<VoteAdd> addVideos = new ArrayList<VoteAdd>();
 

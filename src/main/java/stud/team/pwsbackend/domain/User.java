@@ -4,11 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "_user") //FIXME
+@Table(name = "_user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,6 +45,10 @@ public class User {
     @ToString.Exclude
     private Password password;
 
+    @ManyToMany(mappedBy = "users")
+    private List<Stream> streams;
+
+
     @ManyToMany
     @JoinTable(
             name = "user_has_friends",
@@ -56,7 +62,7 @@ public class User {
     @JoinTable(
             name = "user_has_friend_request",
             joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_sender")) //TODO rename?
+            inverseJoinColumns = @JoinColumn(name = "id_sender"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<User> friendRequest = new HashSet<>();
@@ -69,4 +75,13 @@ public class User {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<GlobalRole> globalRoles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Stream> usersStreams = new ArrayList<Stream>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Playlist> userPlaylists = new ArrayList<Playlist>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Video> userVideos = new ArrayList<Video>();
 }

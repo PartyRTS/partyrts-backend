@@ -24,4 +24,8 @@ public class Message {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_stream")
+    private Stream stream;
 }
