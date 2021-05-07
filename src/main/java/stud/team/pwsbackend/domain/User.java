@@ -1,4 +1,4 @@
-package stud.team.pwsbackend.entity;
+package stud.team.pwsbackend.domain.entity;
 
 import lombok.*;
 
