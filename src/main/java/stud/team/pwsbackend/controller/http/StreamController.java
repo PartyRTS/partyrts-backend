@@ -2,19 +2,13 @@ package stud.team.pwsbackend.controller.http;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import stud.team.pwsbackend.domain.Category;
-import stud.team.pwsbackend.domain.Message;
-import stud.team.pwsbackend.domain.Stream;
-import stud.team.pwsbackend.domain.Vote;
 import stud.team.pwsbackend.dto.CategoryDto;
 import stud.team.pwsbackend.dto.MessageDto;
 import stud.team.pwsbackend.dto.StreamDto;
 import stud.team.pwsbackend.dto.VoteDto;
 import stud.team.pwsbackend.service.StreamService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path ="api/v1/streams",
