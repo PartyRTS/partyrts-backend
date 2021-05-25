@@ -48,7 +48,6 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Stream> streams;
 
-
     @ManyToMany
     @JoinTable(
             name = "user_has_friends",
@@ -84,4 +83,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Video> userVideos = new ArrayList<Video>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserVote> UserVotes = new ArrayList<UserVote>();
 }

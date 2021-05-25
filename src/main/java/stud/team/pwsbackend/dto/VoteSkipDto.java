@@ -13,7 +13,5 @@ public class VoteSkipDto {
 
     private Long idVote;
 
-    private Boolean closeVote;
-
     private Integer numberSkipVideo;
 }

@@ -15,5 +15,6 @@ public class VoteDto {
 
     private Long idVote;
 
-    private Stream stream;
+    private Boolean closeVote;
+
 }

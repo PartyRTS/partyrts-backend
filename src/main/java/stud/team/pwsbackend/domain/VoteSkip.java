@@ -14,11 +14,8 @@ public class VoteSkip {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVote;
 
-    @Column(name = "close_vote")
-    private Boolean closeVote;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_vote")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
     private Vote vote;
 
     @Column(name = "number_skip_video")

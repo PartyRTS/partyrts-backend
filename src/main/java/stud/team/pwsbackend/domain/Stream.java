@@ -28,9 +28,6 @@ public class Stream {
     @Column(name = "current_number_video")
     private Integer currentNumberVideo;
 
-    @OneToOne(mappedBy = "stream", cascade = CascadeType.ALL)
-    private Vote vote;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_playlist")
     private Playlist playlist;
@@ -48,6 +45,9 @@ public class Stream {
     @JoinTable(name = "stream_has_user", joinColumns = @JoinColumn(name = "stream_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "stream")
+    private List<Vote> vote = new ArrayList<Vote>();
 
     @OneToMany(mappedBy = "stream")
     private List<InsertVideos> insertVideos = new ArrayList<InsertVideos>();

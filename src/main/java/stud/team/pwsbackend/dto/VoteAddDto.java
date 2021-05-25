@@ -13,7 +13,5 @@ public class VoteAddDto {
 
     private Long idVote;
 
-    private Boolean closeVote;
-
     private Integer numberPrevVideo;
 }

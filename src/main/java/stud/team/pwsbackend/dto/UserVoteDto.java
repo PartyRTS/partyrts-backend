@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class VideoHasPlaylistDto {
+public class UserVoteDto {
 
-    private Long idVideoHasPlaylist;
+    private Long idUserVote;
 
-    private Integer numberVideo;
+    private Boolean votePlus;
 }

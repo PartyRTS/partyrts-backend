@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import stud.team.pwsbackend.domain.VideoHasPlaylist;
-import stud.team.pwsbackend.dto.VideoHasPlaylistDto;
 
 import java.util.List;
 

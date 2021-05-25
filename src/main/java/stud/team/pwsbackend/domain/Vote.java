@@ -16,13 +16,19 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVote;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @Column(name = "close_vote")
+    private Boolean closeVote;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_stream")
     private Stream stream;
 
-    @OneToMany(mappedBy = "vote")
-    private List<VoteAdd> voteAdds = new ArrayList<VoteAdd>();
+    @OneToOne(mappedBy = "vote", cascade = CascadeType.ALL)
+    private VoteAdd voteAdds;
+
+    @OneToOne(mappedBy = "vote", cascade = CascadeType.ALL)
+    private VoteSkip voteSkips;
 
     @OneToMany(mappedBy = "vote")
-    private List<VoteSkip> voteSkips = new ArrayList<VoteSkip>();
+    private List<UserVote> UserVotes = new ArrayList<UserVote>();
 }
