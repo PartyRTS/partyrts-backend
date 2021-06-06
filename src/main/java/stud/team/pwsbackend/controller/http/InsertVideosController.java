@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 public class InsertVideosController {
 
-    InsertVideosService insertVideosService;
+    private final InsertVideosService insertVideosService;
 
     public InsertVideosController(InsertVideosService insertVideosService) {
         this.insertVideosService = insertVideosService;

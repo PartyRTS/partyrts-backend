@@ -11,12 +11,12 @@ import stud.team.pwsbackend.service.StreamService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="api/v1/streams",
+@RequestMapping(path = "api/v1/streams",
         produces = "application/json")
 @Slf4j
 public class StreamController {
 
-    StreamService streamService;
+    private final StreamService streamService;
 
     public StreamController(StreamService streamService) {
         this.streamService = streamService;
@@ -58,11 +58,11 @@ public class StreamController {
 
     @GetMapping("/{streamId}/votes")
     public List<VoteDto> getAllVoteByStream(@PathVariable Long streamId) {
-        return  streamService.getAllVoteByStream(streamId);
+        return streamService.getAllVoteByStream(streamId);
     }
 
     @PostMapping("/{streamId}/votes/{voteId}")
-    public void addVoteToStream(@PathVariable Long streamId,@PathVariable  Long voteId)  throws Exception {
-        streamService.addVoteToStream(streamId,voteId);
+    public void addVoteToStream(@PathVariable Long streamId, @PathVariable Long voteId) throws Exception {
+        streamService.addVoteToStream(streamId, voteId);
     }
 }

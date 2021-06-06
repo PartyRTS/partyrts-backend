@@ -2,7 +2,6 @@ package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import stud.team.pwsbackend.domain.Category;
 import stud.team.pwsbackend.domain.InsertVideos;
 import stud.team.pwsbackend.dto.InsertVideosDto;
 import stud.team.pwsbackend.mapper.InsertVideosMapper;
@@ -15,8 +14,8 @@ import java.util.Optional;
 @Service
 public class InsertVideosServiceImpl implements InsertVideosService {
 
-    InsertVideosRepository insertVideosRepository;
-    InsertVideosMapper insertVideosMapper;
+    private InsertVideosRepository insertVideosRepository;
+    private InsertVideosMapper insertVideosMapper;
 
     @Override
     public List<InsertVideosDto> getAllInsertVideos() {

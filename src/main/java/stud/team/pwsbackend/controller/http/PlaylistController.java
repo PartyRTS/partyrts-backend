@@ -8,12 +8,12 @@ import stud.team.pwsbackend.service.PlaylistService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="api/v1/playlists",
+@RequestMapping(path = "api/v1/playlists",
         produces = "application/json")
 @Slf4j
 public class PlaylistController {
 
-    PlaylistService playlistService;
+    private final PlaylistService playlistService;
 
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;

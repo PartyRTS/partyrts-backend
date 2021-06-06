@@ -76,14 +76,14 @@ public class User {
     private Set<GlobalRole> globalRoles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Stream> usersStreams = new ArrayList<Stream>();
+    private List<Stream> usersStreams = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Playlist> userPlaylists = new ArrayList<Playlist>();
+    private List<Playlist> userPlaylists = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Video> userVideos = new ArrayList<Video>();
+    private List<Video> userVideos = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<UserVote> UserVotes = new ArrayList<UserVote>();
+    private List<UserVote> userVotes = new ArrayList<>();
 }

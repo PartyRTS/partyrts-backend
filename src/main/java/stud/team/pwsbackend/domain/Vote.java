@@ -1,6 +1,7 @@
 package stud.team.pwsbackend.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "vote")
-@Data
+@Setter
+@Getter
 public class Vote {
 
     @Id
@@ -30,5 +32,5 @@ public class Vote {
     private VoteSkip voteSkips;
 
     @OneToMany(mappedBy = "vote")
-    private List<UserVote> UserVotes = new ArrayList<UserVote>();
+    private List<UserVote> userVotes = new ArrayList<>();
 }

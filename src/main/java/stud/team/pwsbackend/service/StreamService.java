@@ -1,6 +1,5 @@
 package stud.team.pwsbackend.service;
 
-import stud.team.pwsbackend.domain.Message;
 import stud.team.pwsbackend.dto.CategoryDto;
 import stud.team.pwsbackend.dto.MessageDto;
 import stud.team.pwsbackend.dto.StreamDto;
@@ -26,6 +25,6 @@ public interface StreamService {
 
     List<VoteDto> getAllVoteByStream(Long streamId);
 
-    void addVoteToStream(Long streamId,Long voteId) throws Exception;
+    void addVoteToStream(Long streamId, Long voteId) throws Exception;
 
 }

@@ -8,12 +8,12 @@ import stud.team.pwsbackend.service.VideoService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="api/v1/videos",
+@RequestMapping(path = "api/v1/videos",
         produces = "application/json")
 @Slf4j
 public class VideoController {
 
-    VideoService videoService;
+    private final VideoService videoService;
 
     public VideoController(VideoService videoService) {
         this.videoService = videoService;

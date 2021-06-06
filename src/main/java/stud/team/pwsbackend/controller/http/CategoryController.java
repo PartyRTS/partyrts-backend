@@ -8,12 +8,12 @@ import stud.team.pwsbackend.service.CategoryService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="api/v1/categories",
+@RequestMapping(path = "api/v1/categories",
         produces = "application/json")
 @Slf4j
 public class CategoryController {
 
-    CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;

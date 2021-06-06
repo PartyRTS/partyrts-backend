@@ -8,12 +8,12 @@ import stud.team.pwsbackend.service.UserVoteService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="api/v1/userVotes",
+@RequestMapping(path = "api/v1/userVotes",
         produces = "application/json")
 @Slf4j
 public class UserVoteController {
 
-    UserVoteService userVoteService;
+    private final UserVoteService userVoteService;
 
     public UserVoteController(UserVoteService userVoteService) {
         this.userVoteService = userVoteService;

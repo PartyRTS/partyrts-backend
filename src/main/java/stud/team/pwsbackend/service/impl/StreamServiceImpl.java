@@ -25,12 +25,12 @@ import java.util.Optional;
 @Service
 public class StreamServiceImpl implements StreamService {
 
-    StreamRepository streamRepository;
-    VoteRepository voteRepository;
-    StreamMapper streamMapper;
-    MessageMapper messageMapper;
-    CategoryMapper categoryMapper;
-    VoteMapper voteMapper;
+    private StreamRepository streamRepository;
+    private VoteRepository voteRepository;
+    private StreamMapper streamMapper;
+    private MessageMapper messageMapper;
+    private CategoryMapper categoryMapper;
+    private VoteMapper voteMapper;
 
     @Override
     public List<StreamDto> getAllStream() {
@@ -64,7 +64,7 @@ public class StreamServiceImpl implements StreamService {
     @Override
     public List<MessageDto> getAllMessageByStream(Long streamId) {
         Optional<Stream> stream = streamRepository.findById(streamId);
-        if(stream.isPresent()){
+        if (stream.isPresent()) {
             List<Message> messages = new ArrayList<>(stream.get().getMessages());
             return messageMapper.mapToDto(messages);
         }
@@ -74,7 +74,7 @@ public class StreamServiceImpl implements StreamService {
     @Override
     public List<CategoryDto> getAllCategoryByStream(Long streamId) {
         Optional<Stream> stream = streamRepository.findById(streamId);
-        if(stream.isPresent()){
+        if (stream.isPresent()) {
             List<Category> categories = new ArrayList<>(stream.get().getCategories());
             return categoryMapper.listCategoryToListDto(categories);
         }
@@ -84,7 +84,7 @@ public class StreamServiceImpl implements StreamService {
     @Override
     public List<VoteDto> getAllVoteByStream(Long streamId) {
         Optional<Stream> stream = streamRepository.findById(streamId);
-        if(stream.isPresent()){
+        if (stream.isPresent()) {
             List<Vote> votes = new ArrayList<>(stream.get().getVote());
             return voteMapper.listVoteToListDto(votes);
         }
@@ -92,9 +92,9 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
-    public void addVoteToStream(Long streamId, Long voteId)  throws Exception {
-        Stream stream = streamRepository.findById(streamId).orElseThrow(() -> new Exception());
-        Vote vote = voteRepository.findById(voteId).orElseThrow(() -> new Exception());
+    public void addVoteToStream(Long streamId, Long voteId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        Vote vote = voteRepository.findById(voteId).orElseThrow(Exception::new);
         vote.setStream(stream);
         voteRepository.save(vote);
     }

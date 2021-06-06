@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class VideoServiceImpl implements VideoService {
 
-    VideoRepository videoRepository;
-    VideoMapper videoMapper;
+    private VideoRepository videoRepository;
+    private VideoMapper videoMapper;
 
     @Override
     public List<VideoDto> getAllVideo() {

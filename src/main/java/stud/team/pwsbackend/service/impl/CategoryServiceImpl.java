@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    CategoryRepository categoryRepository;
-    CategoryMapper categoryMapper;
+    private CategoryRepository categoryRepository;
+    private CategoryMapper categoryMapper;
 
     @Override
     public List<CategoryDto> getAllCategory() {

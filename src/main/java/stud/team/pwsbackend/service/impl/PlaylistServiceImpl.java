@@ -2,7 +2,6 @@ package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import stud.team.pwsbackend.domain.Category;
 import stud.team.pwsbackend.domain.Playlist;
 import stud.team.pwsbackend.dto.PlaylistDto;
 import stud.team.pwsbackend.mapper.PlaylistMapper;
@@ -15,8 +14,8 @@ import java.util.Optional;
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
 
-    PlaylistRepository playlistRepository;
-    PlaylistMapper playlistMapper;
+    private PlaylistRepository playlistRepository;
+    private PlaylistMapper playlistMapper;
 
     @Override
     public List<PlaylistDto> getAllPlaylist() {

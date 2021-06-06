@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class UserVoteServiceImpl implements UserVoteService {
 
-    UserVoteRepository userVoteRepository;
-    UserVoteMapper userVoteMapper;
+    private UserVoteRepository userVoteRepository;
+    private UserVoteMapper userVoteMapper;
 
     @Override
     public List<UserVoteDto> getAllUserVote() {
