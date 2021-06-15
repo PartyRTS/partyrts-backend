@@ -1,9 +1,6 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.Message;
 import stud.team.pwsbackend.dto.MessageDto;
 
@@ -19,6 +16,10 @@ public interface MessageMapper {
 
     void updateEntity(@MappingTarget Message entity, MessageDto dto);
 
+    @Mappings({
+            @Mapping(target="idUser", source="entity.user.idUser"),
+            @Mapping(target="idStream", source="entity.stream.idStream")
+    })
     MessageDto mapToDto(Message entity);
 
     List<MessageDto> mapToDto(List<Message> entities);

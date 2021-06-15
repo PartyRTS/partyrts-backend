@@ -1,8 +1,6 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.VoteAdd;
 import stud.team.pwsbackend.dto.VoteAddDto;
 
@@ -16,6 +14,10 @@ public interface VoteAddMapper {
 
     VoteAdd dtoToVoteAdd(VoteAddDto voteAddDto);
 
+    @Mappings({
+            @Mapping(target="idIVote", source="voteAdd.vote.idVote"),
+            @Mapping(target="idAddVideo", source="voteAdd.addVideo.idVideo")
+    })
     VoteAddDto voteAddToDto(VoteAdd voteAdd);
 
     List<VoteAdd> listDtoToListVoteAdd(List<VoteAddDto> voteAddDtoList);

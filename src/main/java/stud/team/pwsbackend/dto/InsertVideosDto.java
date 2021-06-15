@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import stud.team.pwsbackend.domain.Video;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +19,8 @@ public class InsertVideosDto {
     private Integer numberPrevVideo;
 
     private Integer numberNextVideo;
+
+    private Long idCurrentVideo;
+
+    private Long idStream;
 }

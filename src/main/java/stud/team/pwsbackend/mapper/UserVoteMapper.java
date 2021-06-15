@@ -1,8 +1,6 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.UserVote;
 import stud.team.pwsbackend.dto.UserVoteDto;
 
@@ -17,6 +15,10 @@ public interface UserVoteMapper {
 
     UserVote dtoToUserVote(UserVoteDto userVoteDto);
 
+    @Mappings({
+            @Mapping(target="idVote", source="userVote.vote.idVote"),
+            @Mapping(target="idUser", source="userVote.user.idUser")
+    })
     UserVoteDto userVoteToDto(UserVote userVote);
 
     List<UserVote> listDtoToListUserVote(List<UserVoteDto> userVoteDtoList);

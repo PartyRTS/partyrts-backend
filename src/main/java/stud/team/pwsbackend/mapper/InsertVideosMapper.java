@@ -1,8 +1,6 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.InsertVideos;
 import stud.team.pwsbackend.dto.InsertVideosDto;
 
@@ -16,6 +14,10 @@ public interface InsertVideosMapper {
 
     InsertVideos dtoToInsertVideos(InsertVideosDto insertVideosDto);
 
+    @Mappings({
+            @Mapping(target="idCurrentVideo", source="insertVideos.currentVideo.idVideo"),
+            @Mapping(target="idStream", source="insertVideos.stream.idStream")
+    })
     InsertVideosDto insertVideosToDto(InsertVideos insertVideos);
 
     List<InsertVideos> listDtoToListInsertVideos(List<InsertVideosDto> insertVideosDtoList);

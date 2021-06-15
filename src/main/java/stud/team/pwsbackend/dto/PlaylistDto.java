@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import stud.team.pwsbackend.domain.User;
 
 
 @Data
@@ -15,4 +16,6 @@ public class PlaylistDto {
     private Long idPlaylist;
 
     private String title;
+
+    private Long idUser;
 }

@@ -1,8 +1,6 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.Video;
 import stud.team.pwsbackend.dto.VideoDto;
 
@@ -16,6 +14,9 @@ public interface VideoMapper {
 
     Video dtoToVideo(VideoDto streamDto);
 
+    @Mappings({
+            @Mapping(target="idUser", source="video.user.idUser")
+    })
     VideoDto videoToDto(Video video);
 
     List<Video> listDtoToListVideo(List<VideoDto> videoDtoList);

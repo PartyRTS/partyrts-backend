@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import stud.team.pwsbackend.domain.User;
 
 
 @Data
@@ -19,4 +20,6 @@ public class VideoDto {
     private String videoUrl;
 
     private String previewUrl;
+
+    private Long idUser;
 }

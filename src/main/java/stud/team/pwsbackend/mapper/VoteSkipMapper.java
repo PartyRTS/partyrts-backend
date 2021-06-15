@@ -1,8 +1,6 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.VoteSkip;
 import stud.team.pwsbackend.dto.VoteSkipDto;
 
@@ -16,6 +14,9 @@ public interface VoteSkipMapper {
 
     VoteSkip dtoToVoteSkip(VoteSkipDto voteSkipDto);
 
+    @Mappings({
+            @Mapping(target="idIVote", source="voteSkip.vote.idVote")
+    })
     VoteSkipDto voteSkipToDto(VoteSkip voteSkip);
 
     List<VoteSkip> listDtoToListVoteSkip(List<VoteSkipDto> voteSkipDtoList);
