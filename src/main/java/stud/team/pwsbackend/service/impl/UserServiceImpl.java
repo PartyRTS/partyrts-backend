@@ -90,8 +90,8 @@ public class UserServiceImpl implements UserService {
         throw new IncorrectCredentialsException();
     }
 
-    public UserDto register(NewUserDto reguserDto) {
-        UserDto userDto = addUser(reguserDto);
+    public UserDto register(NewUserDto newUserDto) {
+        UserDto userDto = addUser(newUserDto);
         User user = userRepository.findById(userDto.getIdUser())
                 .orElseThrow(IllegalStateException::new);
 
