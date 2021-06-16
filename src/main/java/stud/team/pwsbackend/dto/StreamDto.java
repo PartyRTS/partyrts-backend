@@ -10,6 +10,7 @@ import stud.team.pwsbackend.domain.User;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 
 @Data
@@ -23,6 +24,8 @@ public class StreamDto {
     private String streamTitle;
 
     private Boolean privateStream;
+
+    private Boolean activeStream;
 
     private Integer fullUsers;
 

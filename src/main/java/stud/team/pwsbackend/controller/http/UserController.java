@@ -2,6 +2,7 @@ package stud.team.pwsbackend.controller.http;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.NewUserDto;
@@ -10,11 +11,13 @@ import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users")
 @Slf4j
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -54,12 +57,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserDto login(@RequestBody LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
+    public UserDto login(@Valid @RequestBody LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
         return userService.login(loginRequestDto);
     }
 
     @PostMapping("/register")
-    public UserDto register(@RequestBody NewUserDto newUserDto) {
+    public UserDto register(@Valid @RequestBody NewUserDto newUserDto) {
         return userService.register(newUserDto);
     }
 }

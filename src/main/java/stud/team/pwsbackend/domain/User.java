@@ -55,7 +55,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "id_friend"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<User> friends = new HashSet<>();
+    private List<User> friends = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -64,7 +64,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "id_sender"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<User> friendRequest = new HashSet<>();
+    private List<User> friendRequest = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

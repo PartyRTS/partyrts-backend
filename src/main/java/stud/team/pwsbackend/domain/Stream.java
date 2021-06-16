@@ -22,6 +22,9 @@ public class Stream {
     @Column(name = "private_stream")
     private Boolean privateStream;
 
+    @Column(name = "active_stream")
+    private Boolean activeStream;
+
     @Column(name = "full_users")
     private Integer fullUsers;
 

@@ -11,9 +11,7 @@ import java.util.List;
 public interface UserFriendRequestService {
     List<UserDto> getAllFriendRequests(long userId) throws UserNotFoundException;
 
-    void deleteAllFriendRequests(long userId) throws UserNotFoundException;
-
-    MessageDto addFriendRequest(long userId, long senderId) throws UserNotFoundException;
+    void addFriendRequest(long userId, long senderId) throws UserNotFoundException;
 
     void deleteFriendRequest(long userId, long senderId) throws UserNotFoundException;
 

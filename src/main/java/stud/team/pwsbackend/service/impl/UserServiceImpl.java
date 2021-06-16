@@ -18,6 +18,7 @@ import stud.team.pwsbackend.repository.UserRepository;
 import stud.team.pwsbackend.service.UserService;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    public UserDto login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
+    public UserDto login(@Valid LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
 
