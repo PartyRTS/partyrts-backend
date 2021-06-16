@@ -1,10 +1,8 @@
 package stud.team.pwsbackend.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import stud.team.pwsbackend.domain.User;
+import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UserDto;
 
 import java.util.List;
@@ -16,6 +14,9 @@ import java.util.List;
 )
 public interface UserMapper {
     User mapToEntity(UserDto dto);
+
+    @Mapping(target = "password", ignore = true)
+    User mapToEntity(NewUserDto dto);
 
     void updateEntity(@MappingTarget User entity, UserDto dto);
 

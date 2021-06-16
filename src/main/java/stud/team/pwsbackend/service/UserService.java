@@ -2,6 +2,7 @@ package stud.team.pwsbackend.service;
 
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.dto.LoginRequestDto;
+import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UserDto;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
@@ -13,7 +14,7 @@ public interface UserService {
 
     List<UserDto> getAllUsers();
 
-    UserDto addUser(UserDto userDto);
+    UserDto addUser(NewUserDto userDto);
 
     void deleteAllUsers();
 
@@ -25,6 +26,5 @@ public interface UserService {
 
     public UserDto login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException;
 
-
-    public UserDto register(UserDto reguserDto);
+    public UserDto register(NewUserDto reguserDto);
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.Password;
 import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.dto.LoginRequestDto;
+import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UserDto;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
@@ -36,12 +37,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToDto(users);
     }
 
-    public UserDto addUser(UserDto userDto) {
-        //FIXME
+    public UserDto addUser(NewUserDto userDto) {
         User user = userMapper.mapToEntity(userDto);
         Password userPassword = new Password();
 
-        String passwordHash = passwordEncoder.encode("example");
+        String passwordHash = passwordEncoder.encode(userDto.getPassword());
         userPassword.setPasswordHash(passwordHash);
 
         user.setPassword(userPassword);
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         throw new IncorrectCredentialsException();
     }
 
-    public UserDto register(UserDto reguserDto) {
+    public UserDto register(NewUserDto reguserDto) {
         UserDto userDto = addUser(reguserDto);
         User user = userRepository.findById(userDto.getIdUser())
                 .orElseThrow(IllegalStateException::new);

@@ -4,6 +4,7 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.LoginRequestDto;
+import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UserDto;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto addUser(@RequestBody UserDto userDto) {
+    public UserDto addUser(@RequestBody NewUserDto userDto) {
         return userService.addUser(userDto);
     }
 
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserDto register(@RequestBody UserDto newUserDto) {
+    public UserDto register(@RequestBody NewUserDto newUserDto) {
         return userService.register(newUserDto);
     }
 }
