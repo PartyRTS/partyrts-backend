@@ -35,7 +35,7 @@ public class VideoController {
     }
 
     @PostMapping
-    public VideoDto addVideo(@RequestBody VideoDto videoDto) {
+    public VideoDto addVideo(@RequestBody VideoDto videoDto) throws Exception {
         return videoService.addVideo(videoDto);
     }
 

@@ -12,7 +12,7 @@ public interface VideoService {
 
     VideoDto getVideoById(Long videoId);
 
-    VideoDto addVideo(VideoDto videoDto);
+    VideoDto addVideo(VideoDto videoDto) throws Exception;
 
     void deleteVideoById(Long videoId);
 }

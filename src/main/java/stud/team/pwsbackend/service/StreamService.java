@@ -1,9 +1,6 @@
 package stud.team.pwsbackend.service;
 
-import stud.team.pwsbackend.dto.CategoryDto;
-import stud.team.pwsbackend.dto.MessageDto;
-import stud.team.pwsbackend.dto.StreamDto;
-import stud.team.pwsbackend.dto.VoteDto;
+import stud.team.pwsbackend.dto.*;
 
 import java.util.List;
 
@@ -15,7 +12,7 @@ public interface StreamService {
 
     StreamDto getStreamById(Long streamId);
 
-    StreamDto addStream(StreamDto streamDto);
+    StreamDto addStream(StreamDto streamDto) throws Exception;
 
     void deleteStreamById(Long streamId);
 
@@ -25,6 +22,18 @@ public interface StreamService {
 
     List<VoteDto> getAllVoteByStream(Long streamId);
 
-    void addVoteToStream(Long streamId, Long voteId) throws Exception;
+    void addVoteAddToStream(Long streamId,VoteAddDto voteAddDto) throws Exception;
+
+    void addVoteSkipToStream(Long streamId,VoteSkipDto voteSkipDto) throws Exception;
+
+    List<VoteAddDto> getAllVoteAddByStream(Long streamId) throws Exception;
+
+    List<VoteSkipDto> getAllVoteSkipByStream(Long streamId) throws Exception;
+
+    void addCategoriesToStream(Long streamId,List<Long> categoriesId) throws Exception;
+
+    void addUserToStream(Long streamId,Long userId) throws Exception;
+
+    void addInsertVideoToStream(Long streamId,InsertVideosDto insVideoDto) throws Exception;
 
 }

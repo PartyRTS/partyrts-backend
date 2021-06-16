@@ -2,9 +2,11 @@ package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.domain.Video;
 import stud.team.pwsbackend.dto.VideoDto;
 import stud.team.pwsbackend.mapper.VideoMapper;
+import stud.team.pwsbackend.repository.UserRepository;
 import stud.team.pwsbackend.repository.VideoRepository;
 import stud.team.pwsbackend.service.VideoService;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class VideoServiceImpl implements VideoService {
 
     private VideoRepository videoRepository;
+    private UserRepository userRepository;
     private VideoMapper videoMapper;
 
     @Override
@@ -35,8 +38,10 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public VideoDto addVideo(VideoDto videoDto) {
+    public VideoDto addVideo(VideoDto videoDto) throws Exception {
         Video video = videoMapper.dtoToVideo(videoDto);
+        User user = userRepository.findById(videoDto.getIdUser()).orElseThrow(Exception::new);
+        video.setUser(user);
         video = videoRepository.save(video);
         return videoMapper.videoToDto(video);
     }

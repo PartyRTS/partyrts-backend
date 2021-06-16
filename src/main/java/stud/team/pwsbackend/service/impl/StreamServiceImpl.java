@@ -2,20 +2,11 @@ package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import stud.team.pwsbackend.domain.Category;
-import stud.team.pwsbackend.domain.Message;
-import stud.team.pwsbackend.domain.Stream;
-import stud.team.pwsbackend.domain.Vote;
-import stud.team.pwsbackend.dto.CategoryDto;
-import stud.team.pwsbackend.dto.MessageDto;
-import stud.team.pwsbackend.dto.StreamDto;
-import stud.team.pwsbackend.dto.VoteDto;
-import stud.team.pwsbackend.mapper.CategoryMapper;
-import stud.team.pwsbackend.mapper.MessageMapper;
-import stud.team.pwsbackend.mapper.StreamMapper;
-import stud.team.pwsbackend.mapper.VoteMapper;
-import stud.team.pwsbackend.repository.StreamRepository;
-import stud.team.pwsbackend.repository.VoteRepository;
+import stud.team.pwsbackend.domain.*;
+import stud.team.pwsbackend.dto.*;
+import stud.team.pwsbackend.mapper.*;
+import stud.team.pwsbackend.repository.*;
+import stud.team.pwsbackend.service.InsertVideosService;
 import stud.team.pwsbackend.service.StreamService;
 
 import java.util.ArrayList;
@@ -26,11 +17,21 @@ import java.util.Optional;
 public class StreamServiceImpl implements StreamService {
 
     private StreamRepository streamRepository;
+    private VideoRepository videoRepository;
+    private VoteAddRepository voteAddRepository;
+    private VoteSkipRepository voteSkipRepository;
     private VoteRepository voteRepository;
+    private UserRepository userRepository;
+    private PlaylistRepository playlistRepository;
+    private CategoryRepository categoryRepository;
+    private InsertVideosRepository insVideosRepository;
     private StreamMapper streamMapper;
     private MessageMapper messageMapper;
     private CategoryMapper categoryMapper;
     private VoteMapper voteMapper;
+    private VoteSkipMapper voteSkipMapper;
+    private VoteAddMapper voteAddMapper;
+    private InsertVideosMapper insVideosMapper;
 
     @Override
     public List<StreamDto> getAllStream() {
@@ -50,8 +51,12 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
-    public StreamDto addStream(StreamDto streamDto) {
+    public StreamDto addStream(StreamDto streamDto) throws Exception{
         Stream stream = streamMapper.dtoToStream(streamDto);
+        User user = userRepository.findById(streamDto.getIdUser()).orElseThrow(Exception::new);
+        Playlist playlist = playlistRepository.findById(streamDto.getIdPlaylist()).orElseThrow(Exception::new);
+        stream.setUser(user);
+        stream.setPlaylist(playlist);
         stream = streamRepository.save(stream);
         return streamMapper.streamToDto(stream);
     }
@@ -92,12 +97,89 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
-    public void addVoteToStream(Long streamId, Long voteId) throws Exception {
+    public void addVoteAddToStream(Long streamId, VoteAddDto voteAddDto) throws Exception {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
-        Vote vote = voteRepository.findById(voteId).orElseThrow(Exception::new);
+        Video video = videoRepository.findById(voteAddDto.getIdAddVideo()).orElseThrow(Exception::new);
+        Vote vote= new Vote();
         vote.setStream(stream);
-        voteRepository.save(vote);
+        vote.setCloseVote(false);
+        vote = voteRepository.save(vote);
+        VoteAdd voteAdd = new VoteAdd();
+        voteAdd.setNumberPrevVideo(voteAddDto.getNumberPrevVideo());
+        voteAdd.setAddVideo(video);
+        voteAdd.setVote(vote);
+        voteAddRepository.save(voteAdd);
     }
+
+    @Override
+    public void addVoteSkipToStream(Long streamId, VoteSkipDto voteSkipDto) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        Vote vote= new Vote();
+        vote.setStream(stream);
+        vote.setCloseVote(false);
+        vote = voteRepository.save(vote);
+        VoteSkip voteSkip = new VoteSkip();
+        voteSkip.setNumberSkipVideo(voteSkipDto.getNumberSkipVideo());
+        voteSkip.setVote(vote);
+        voteSkipRepository.save(voteSkip);
+    }
+
+    @Override
+    public List<VoteAddDto> getAllVoteAddByStream(Long streamId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        List<VoteAddDto> voteAddDtos = new ArrayList<>();
+        for(Vote vote : stream.getVote()){
+            if(vote.getVoteAdds() != null){
+                voteAddDtos.add(voteAddMapper.voteAddToDto(vote.getVoteAdds()));
+            }
+        }
+        return voteAddDtos;
+    }
+
+    @Override
+    public List<VoteSkipDto> getAllVoteSkipByStream(Long streamId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        List<VoteSkipDto> voteSkipDtos = new ArrayList<>();
+        for(Vote vote : stream.getVote()){
+            if(vote.getVoteSkips() != null){
+                voteSkipDtos.add(voteSkipMapper.voteSkipToDto(vote.getVoteSkips()));
+            }
+        }
+        return voteSkipDtos;
+    }
+
+    @Override
+    public void addCategoriesToStream(Long streamId, List<Long> categoriesId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        List<Category> categories = categoryRepository.findCategoriesIds(categoriesId);
+        stream.setCategories(categories);
+        streamRepository.save(stream);
+        for(Category category : categories){
+            category.getStreams().add(stream);
+            categoryRepository.save(category);
+        }
+    }
+
+    @Override
+    public void addUserToStream(Long streamId, Long userId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        User user = userRepository.findById(userId).orElseThrow(Exception::new);
+        stream.getUsers().add(user);
+        streamRepository.save(stream);
+        user.getStreams().add(stream);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addInsertVideoToStream(Long streamId, InsertVideosDto insVideoDto) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        InsertVideos insertVideos = insVideosMapper.dtoToInsertVideos(insVideoDto);
+        Video video = videoRepository.findById(insVideoDto.getIdCurrentVideo()).orElseThrow(Exception::new);
+        insertVideos.setCurrentVideo(video);
+        insertVideos.setStream(stream);
+        insVideosRepository.save(insertVideos);
+    }
+
 
     @Autowired
     public void setStreamRepository(StreamRepository streamRepository) {
@@ -127,5 +209,50 @@ public class StreamServiceImpl implements StreamService {
     @Autowired
     public void setVoteMapper(VoteMapper voteMapper) {
         this.voteMapper = voteMapper;
+    }
+
+    @Autowired
+    public void setVideoRepository(VideoRepository videoRepository) {
+        this.videoRepository = videoRepository;
+    }
+
+    @Autowired
+    public void setVoteAddRepository(VoteAddRepository voteAddRepository) {
+        this.voteAddRepository = voteAddRepository;
+    }
+
+    @Autowired
+    public void setVoteSkipRepository(VoteSkipRepository voteSkipRepository) {
+        this.voteSkipRepository = voteSkipRepository;
+    }
+
+    @Autowired
+    public void setVoteSkipMapper(VoteSkipMapper voteSkipMapper) {
+        this.voteSkipMapper = voteSkipMapper;
+    }
+
+    @Autowired
+    public void setVoteAddMapper(VoteAddMapper voteAddMapper) {
+        this.voteAddMapper = voteAddMapper;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setPlaylistRepository(PlaylistRepository playlistRepository) {
+        this.playlistRepository = playlistRepository;
+    }
+
+    @Autowired
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Autowired
+    public void setInsVideosMapper(InsertVideosMapper insVideosMapper) {
+        this.insVideosMapper = insVideosMapper;
     }
 }

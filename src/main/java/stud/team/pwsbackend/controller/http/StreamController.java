@@ -2,10 +2,7 @@ package stud.team.pwsbackend.controller.http;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import stud.team.pwsbackend.dto.CategoryDto;
-import stud.team.pwsbackend.dto.MessageDto;
-import stud.team.pwsbackend.dto.StreamDto;
-import stud.team.pwsbackend.dto.VoteDto;
+import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.service.StreamService;
 
 import java.util.List;
@@ -38,7 +35,7 @@ public class StreamController {
     }
 
     @PostMapping
-    public StreamDto addStream(@RequestBody StreamDto streamDto) {
+    public StreamDto addStream(@RequestBody StreamDto streamDto) throws Exception {
         return streamService.addStream(streamDto);
     }
 
@@ -61,8 +58,38 @@ public class StreamController {
         return streamService.getAllVoteByStream(streamId);
     }
 
-    @PostMapping("/{streamId}/votes/{voteId}")
-    public void addVoteToStream(@PathVariable Long streamId, @PathVariable Long voteId) throws Exception {
-        streamService.addVoteToStream(streamId, voteId);
+    @PostMapping("/{streamId}/addVoteAdd")
+    public void addVoteAddToStream(@PathVariable Long streamId,@RequestBody VoteAddDto voteAddDto) throws Exception {
+        streamService.addVoteAddToStream(streamId,voteAddDto);
+    }
+
+    @PostMapping("/{streamId}/addSkipVote")
+    public void addVoteSkipToStream(@PathVariable Long streamId,@RequestBody VoteSkipDto voteSkipDto) throws Exception {
+        streamService.addVoteSkipToStream(streamId,voteSkipDto);
+    }
+
+    @GetMapping("/{streamId}/voteAdds")
+    public List<VoteAddDto> getAllVoteAddByStream(@PathVariable Long streamId) throws Exception {
+        return streamService.getAllVoteAddByStream(streamId);
+    }
+
+    @GetMapping("/{streamId}/voteSkips")
+    public List<VoteSkipDto> getAllVoteSkipByStream(@PathVariable Long streamId) throws Exception {
+        return streamService.getAllVoteSkipByStream(streamId);
+    }
+
+    @PostMapping("/{streamId}/addCategories")
+    public void addCategoriesToStream(@PathVariable Long streamId,@RequestBody List<Long> categoriesId) throws Exception {
+        streamService.addCategoriesToStream(streamId,categoriesId);
+    }
+
+    @PostMapping("/{streamId}/addWatcher/{userId}")
+    public void addUserToStream(@PathVariable Long streamId,@PathVariable  Long userId) throws Exception {
+        streamService.addUserToStream(streamId,userId);
+    }
+
+    @PostMapping("/{streamId}/addInsertVideo")
+    public void addInsertVideoToStream(@PathVariable Long streamId,@RequestBody InsertVideosDto insVideoDto) throws Exception {
+        streamService.addInsertVideoToStream(streamId,insVideoDto);
     }
 }
