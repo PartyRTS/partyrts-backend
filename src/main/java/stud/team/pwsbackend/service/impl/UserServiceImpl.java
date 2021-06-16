@@ -7,14 +7,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.Password;
 import stud.team.pwsbackend.domain.User;
+import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.UserDto;
+import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.mapper.UserMapper;
+import stud.team.pwsbackend.repository.GlobalRoleRepository;
 import stud.team.pwsbackend.repository.UserRepository;
 import stud.team.pwsbackend.service.UserService;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -22,6 +26,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private GlobalRoleRepository globalRoleRepository;
     private UserMapper userMapper;
     private PasswordEncoder passwordEncoder;
 
@@ -69,6 +74,34 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    public UserDto login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
+        String email = loginRequestDto.getEmail();
+        String password = loginRequestDto.getPassword();
+
+        var user = userRepository.findByEmail(email).orElseThrow(IncorrectCredentialsException::new);
+        var userId = user.getIdUser();
+
+        String hash = user.getPassword().getPasswordHash();
+
+        if (passwordEncoder.matches(password, hash)) {
+            return userMapper.mapToDto(user);
+        }
+        throw new IncorrectCredentialsException();
+    }
+
+    public UserDto register(UserDto reguserDto) {
+        UserDto userDto = addUser(reguserDto);
+        User user = userRepository.findById(userDto.getIdUser())
+                .orElseThrow(IllegalStateException::new);
+
+        var userRole = globalRoleRepository
+                .findByTitle("USER")
+                .orElseThrow(IllegalStateException::new);
+
+        user.setGlobalRoles(Set.of(userRole));
+        return userMapper.mapToDto(user);
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -82,5 +115,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setGlobalRoleRepository(GlobalRoleRepository globalRoleRepository) {
+        this.globalRoleRepository = globalRoleRepository;
     }
 }

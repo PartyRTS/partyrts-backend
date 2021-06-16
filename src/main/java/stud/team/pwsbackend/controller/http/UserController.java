@@ -3,7 +3,9 @@ package stud.team.pwsbackend.controller.http;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.UserDto;
+import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.service.UserService;
 
@@ -48,5 +50,15 @@ public class UserController {
     @PutMapping("/{userId}/password")
     public void updateUserPassword(@PathVariable long userId, @RequestBody UserDto userDto) throws UserNotFoundException {
         userService.updateUser(userId, userDto);
+    }
+
+    @PostMapping("/login")
+    public UserDto login(@RequestBody LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
+        return userService.login(loginRequestDto);
+    }
+
+    @PostMapping("/register")
+    public UserDto register(@RequestBody UserDto newUserDto) {
+        return userService.register(newUserDto);
     }
 }
