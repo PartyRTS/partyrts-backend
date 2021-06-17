@@ -55,6 +55,7 @@ public class UserFriendRequestServiceImpl implements UserFriendRequestService {
                 .orElseThrow();
         if(!firstUser.getFriends().contains(secondUser)) {
             firstUser.getFriends().add(secondUser);
+            secondUser.getFriends().add(firstUser);
         }
 
         deleteFriendRequest(userId, senderId);
