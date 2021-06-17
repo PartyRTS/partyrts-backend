@@ -3,10 +3,7 @@ package stud.team.pwsbackend.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import stud.team.pwsbackend.domain.User;
-import stud.team.pwsbackend.dto.MessageDto;
 import stud.team.pwsbackend.dto.UserDto;
-import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.mapper.UserMapper;
 import stud.team.pwsbackend.repository.UserRepository;
@@ -53,7 +50,7 @@ public class UserFriendRequestServiceImpl implements UserFriendRequestService {
                 .orElseThrow();
         var secondUser = userRepository.findById(senderId)
                 .orElseThrow();
-        if(!firstUser.getFriends().contains(secondUser)) {
+        if (!firstUser.getFriends().contains(secondUser)) {
             firstUser.getFriends().add(secondUser);
             secondUser.getFriends().add(firstUser);
         }
