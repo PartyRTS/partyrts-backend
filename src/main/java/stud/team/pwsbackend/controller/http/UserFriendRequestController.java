@@ -7,6 +7,7 @@ import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.service.UserFriendRequestService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/v1/users/{userId}/friendRequests",
@@ -25,17 +26,20 @@ public class UserFriendRequestController {
     }
 
     @PostMapping("/send")
-    public void addFriendRequest(@PathVariable long userId, @RequestBody long recipientId) throws UserNotFoundException {
+    public void addFriendRequest(@PathVariable long userId, @RequestBody Map<String, Long> param) throws UserNotFoundException {
+        var recipientId = param.get("recipientId");
         userFriendRequestService.addFriendRequest(recipientId, userId);
     }
 
     @PostMapping("/accept")
-    void acceptFriendRequest(@PathVariable long userId, @RequestBody long senderId) throws UserNotFoundException {
+    void acceptFriendRequest(@PathVariable long userId, @RequestBody Map<String, Long> param) throws UserNotFoundException {
+        var senderId = param.get("senderId");
         userFriendRequestService.acceptFriendRequest(userId, senderId);
     }
 
-    @DeleteMapping("/decline")
-    void declineFriendRequest(@PathVariable long userId, @RequestBody long senderId) throws UserNotFoundException {
+    @PostMapping("/decline")
+    void declineFriendRequest(@PathVariable long userId, @RequestBody Map<String, Long> param) throws UserNotFoundException {
+        var senderId = param.get("senderId");
         userFriendRequestService.declineFriendRequest(userId, senderId);
     }
 
