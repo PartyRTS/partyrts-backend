@@ -1,5 +1,6 @@
 package stud.team.pwsbackend.controller.http;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.UserDto;
@@ -26,18 +27,21 @@ public class UserFriendRequestController {
     }
 
     @PostMapping("/send")
+    @Operation(description = "{\"senderId\": 1}")
     public void addFriendRequest(@PathVariable long userId, @RequestBody Map<String, Long> param) throws UserNotFoundException {
-        var recipientId = param.get("recipientId");
-        userFriendRequestService.addFriendRequest(recipientId, userId);
+        var senderId = param.get("senderId");
+        userFriendRequestService.addFriendRequest(userId, senderId);
     }
 
     @PostMapping("/accept")
+    @Operation(description = "{\"senderId\": 1}")
     void acceptFriendRequest(@PathVariable long userId, @RequestBody Map<String, Long> param) throws UserNotFoundException {
         var senderId = param.get("senderId");
         userFriendRequestService.acceptFriendRequest(userId, senderId);
     }
 
     @PostMapping("/decline")
+    @Operation(description = "{\"senderId\": 1}")
     void declineFriendRequest(@PathVariable long userId, @RequestBody Map<String, Long> param) throws UserNotFoundException {
         var senderId = param.get("senderId");
         userFriendRequestService.declineFriendRequest(userId, senderId);

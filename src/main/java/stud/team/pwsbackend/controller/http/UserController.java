@@ -4,8 +4,6 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import stud.team.pwsbackend.domain.Password;
-import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UpdatePasswordRequestDto;
@@ -57,11 +55,6 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @PutMapping("/{userId}/password")
-    public void updateUserPassword(@PathVariable long userId, @RequestBody UserDto userDto) throws UserNotFoundException {
-        userService.updateUser(userId, userDto);
-    }
-
     @PostMapping("/login")
     public UserDto login(@Valid @RequestBody LoginRequestDto loginRequestDto) throws IncorrectCredentialsException {
         return userService.login(loginRequestDto);
@@ -72,14 +65,14 @@ public class UserController {
         return userService.register(newUserDto);
     }
 
-    @PostMapping("/{userId}/updUser")
-    public void updateUser(@PathVariable long userId,@Valid @RequestBody UserDto userDto) throws UserNotFoundException {
-        userService.updateUser(userId,userDto);
+    @PutMapping("/{userId}")
+    public void updateUser(@PathVariable long userId, @Valid @RequestBody UserDto userDto) throws UserNotFoundException {
+        userService.updateUser(userId, userDto);
     }
 
-    @PostMapping("/{userId}/updPassword")
-    public void updatePassword(@PathVariable long userId,@Valid @RequestBody UpdatePasswordRequestDto updPassword) throws UserNotFoundException {
-        userService.updatePassword(userId,updPassword);
+    @PutMapping("/{userId}/password")
+    public void updatePassword(@PathVariable long userId, @Valid @RequestBody UpdatePasswordRequestDto updPassword) throws UserNotFoundException {
+        userService.updatePassword(userId, updPassword);
     }
 
     @GetMapping("/{userId}/friends")
@@ -87,9 +80,9 @@ public class UserController {
         return friendRequestService.getAllFriends(userId);
     }
 
-    @DeleteMapping("/{userId}/deleteFriend")
-    public void deleteFriend(@PathVariable long userId,@RequestBody long friendId) throws UserNotFoundException {
-        friendRequestService.deleteFriend(userId,friendId);
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    public void deleteFriend(@PathVariable long userId, @PathVariable long friendId) throws UserNotFoundException {
+        friendRequestService.deleteFriend(userId, friendId);
     }
 
 }
