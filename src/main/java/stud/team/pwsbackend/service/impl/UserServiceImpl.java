@@ -117,6 +117,12 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToDto(user);
     }
 
+    @Override
+    public List<UserDto> findUserByName(String searchString) {
+        var users = userRepository.findUserByName(searchString);
+        return userMapper.mapToDto(users);
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

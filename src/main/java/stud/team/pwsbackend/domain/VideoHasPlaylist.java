@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "videoHasPlaylist")
+@Table(name = "video_has_playlist")
 @Data
 public class VideoHasPlaylist {
 

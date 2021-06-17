@@ -1,6 +1,8 @@
 package stud.team.pwsbackend.service;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UpdatePasswordRequestDto;
@@ -27,7 +29,9 @@ public interface UserService {
 
     void deleteUser(long userId) throws UserNotFoundException;
 
-    public UserDto login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException;
+    UserDto login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException;
 
-    public UserDto register(NewUserDto reguserDto);
+    UserDto register(NewUserDto reguserDto);
+
+    List<UserDto> findUserByName(String searchString);
 }

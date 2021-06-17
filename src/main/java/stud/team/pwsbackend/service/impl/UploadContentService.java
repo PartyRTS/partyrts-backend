@@ -12,16 +12,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import stud.team.pwsbackend.domain.User;
+import stud.team.pwsbackend.domain.Video;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.repository.UserRepository;
+import stud.team.pwsbackend.repository.VideoRepository;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @Service
 public class UploadContentService {
     private UserRepository userRepository;
+    private VideoRepository videoRepository;
     private final String awsS3Logo = "https://logouserbucket.s3-us-west-2.amazonaws.com/";
     private final String awsS3Video = "https://videousersbucket.s3-us-west-2.amazonaws.com/";
     private String bucketLogoName = "logouserbucket";
@@ -45,7 +49,8 @@ public class UploadContentService {
         return urlLogo;
     }
 
-    public String updloadPreviewVideo(long videoId, MultipartFile file) throws IOException {
+    public String uploadPreviewVideo(long videoId, MultipartFile file) throws IOException {
+        Video video = videoRepository.findById(videoId).orElseThrow();
         String pathKey = videoId + "/preview/" + file.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -54,7 +59,10 @@ public class UploadContentService {
                 pathKey,
                 file.getInputStream(), metadata)
                 .withAccessControlList(s3client.getBucketAcl(bucketVideoName)));
-        return awsS3Video + URLEncoder.encode(pathKey, StandardCharsets.UTF_8.toString());
+        String urlpreview = awsS3Video + URLEncoder.encode(pathKey, StandardCharsets.UTF_8.toString());
+        video.setPreviewUrl(urlpreview);
+        videoRepository.save(video);
+        return urlpreview;
     }
 
     @Autowired
@@ -72,5 +80,10 @@ public class UploadContentService {
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setVideoRepository(VideoRepository videoRepository) {
+        this.videoRepository = videoRepository;
     }
 }

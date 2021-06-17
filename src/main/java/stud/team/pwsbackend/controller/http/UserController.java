@@ -92,4 +92,9 @@ public class UserController {
         friendRequestService.deleteFriend(userId,friendId);
     }
 
+    @GetMapping("/search")
+    public List<UserDto> findUserByName(@RequestParam("search") String search){
+        return userService.findUserByName(search);
+    }
+
 }
