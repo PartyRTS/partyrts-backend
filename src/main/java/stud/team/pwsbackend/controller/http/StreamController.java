@@ -93,4 +93,9 @@ public class StreamController {
     public void addInsertVideoToStream(@PathVariable Long streamId,@Valid @RequestBody InsertVideosDto insVideoDto) throws Exception {
         streamService.addInsertVideoToStream(streamId,insVideoDto);
     }
+
+    @GetMapping("/search")
+    public List<StreamDto> findStreamsByTitle(@RequestParam("search") String search){
+        return streamService.findStreamsByTitle(search);
+    }
 }

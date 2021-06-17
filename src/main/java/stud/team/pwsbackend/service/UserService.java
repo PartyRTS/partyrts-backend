@@ -33,5 +33,5 @@ public interface UserService {
 
     UserDto register(NewUserDto reguserDto);
 
-    List<UserDto> findUserByName(String searchString);
+    List<UserDto> findUsersByName(String searchString);
 }

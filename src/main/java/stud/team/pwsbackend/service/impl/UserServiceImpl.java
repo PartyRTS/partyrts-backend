@@ -118,8 +118,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findUserByName(String searchString) {
-        var users = userRepository.findUserByName(searchString);
+    public List<UserDto> findUsersByName(String search) {
+        var users = userRepository.findUserByName(search);
         return userMapper.mapToDto(users);
     }
 

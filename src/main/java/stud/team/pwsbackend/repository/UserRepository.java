@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query("select u from User u where (upper(u.firstName) like concat('%', upper(search), '%')) or" +
-            "(upper(u.secondName) like concat('%', upper(search), '%'))")
-    List<User> findUserByName(@Param("search")String searchString);
+    @Query("select u from User u where (upper(u.firstName) like concat('%', upper(?1), '%')) or" +
+            "(upper(u.secondName) like concat('%', upper(?1), '%'))")
+    List<User> findUserByName(String search);
 }

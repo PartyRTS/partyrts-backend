@@ -180,6 +180,12 @@ public class StreamServiceImpl implements StreamService {
         insVideosRepository.save(insertVideos);
     }
 
+    @Override
+    public List<StreamDto> findStreamsByTitle(String search) {
+        List<Stream> streams = streamRepository.findByStreamTitleContainingIgnoreCase(search);
+        return streamMapper.listStreamToListDto(streams);
+    }
+
 
     @Autowired
     public void setStreamRepository(StreamRepository streamRepository) {
@@ -249,6 +255,11 @@ public class StreamServiceImpl implements StreamService {
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
+    }
+
+    @Autowired
+    public void setInsVideosRepository(InsertVideosRepository insVideosRepository) {
+        this.insVideosRepository = insVideosRepository;
     }
 
     @Autowired
