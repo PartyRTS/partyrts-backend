@@ -3,6 +3,7 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.VideoDto;
+import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.service.VideoService;
 
 import java.util.List;
@@ -43,4 +44,5 @@ public class VideoController {
     public void deleteVideoById(@PathVariable Long videoId) {
         videoService.deleteVideoById(videoId);
     }
+
 }

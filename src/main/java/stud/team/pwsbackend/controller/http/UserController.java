@@ -4,14 +4,14 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import stud.team.pwsbackend.dto.LoginRequestDto;
-import stud.team.pwsbackend.dto.NewUserDto;
-import stud.team.pwsbackend.dto.UpdatePasswordRequestDto;
-import stud.team.pwsbackend.dto.UserDto;
+import stud.team.pwsbackend.domain.Video;
+import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
+import stud.team.pwsbackend.service.PlaylistService;
 import stud.team.pwsbackend.service.UserFriendRequestService;
 import stud.team.pwsbackend.service.UserService;
+import stud.team.pwsbackend.service.VideoService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,10 +24,14 @@ public class UserController {
 
     private final UserService userService;
     private final UserFriendRequestService friendRequestService;
+    private final VideoService videoService;
+    private final PlaylistService playlistService;
 
-    public UserController(UserService userService, UserFriendRequestService friendRequestService) {
+    public UserController(UserService userService, UserFriendRequestService friendRequestService, VideoService videoService, PlaylistService playlistService) {
         this.userService = userService;
         this.friendRequestService = friendRequestService;
+        this.videoService = videoService;
+        this.playlistService = playlistService;
     }
 
     @GetMapping
@@ -88,6 +92,16 @@ public class UserController {
     @GetMapping("/search")
     public List<UserDto> findUsersByName(@RequestParam("search") String search){
         return userService.findUsersByName(search);
+    }
+
+    @GetMapping("/{userId}/videos")
+    public List<VideoDto> getUserVideos(@PathVariable long userId) throws UserNotFoundException {
+        return videoService.getAllVideoByUser(userId);
+    }
+
+    @GetMapping("/{userId}/playlists")
+    public List<PlaylistDto> getAllPlaylistsByUser(@PathVariable Long userId) throws UserNotFoundException{
+        return playlistService.getAllPlaylistsByUser(userId);
     }
 
 }

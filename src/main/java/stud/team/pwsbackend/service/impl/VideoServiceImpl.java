@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.domain.Video;
 import stud.team.pwsbackend.dto.VideoDto;
+import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.mapper.VideoMapper;
 import stud.team.pwsbackend.repository.UserRepository;
 import stud.team.pwsbackend.repository.VideoRepository;
@@ -51,6 +52,12 @@ public class VideoServiceImpl implements VideoService {
         videoRepository.deleteById(videoId);
     }
 
+    @Override
+    public List<VideoDto> getAllVideoByUser(Long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow();
+        return videoMapper.listVideoToListDto(user.getUserVideos());
+    }
+
     @Autowired
     public void setVideoRepository(VideoRepository videoRepository) {
         this.videoRepository = videoRepository;
@@ -59,5 +66,10 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     public void setVideoMapper(VideoMapper videoMapper) {
         this.videoMapper = videoMapper;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }
