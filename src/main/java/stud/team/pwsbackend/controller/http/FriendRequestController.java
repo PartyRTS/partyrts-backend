@@ -38,4 +38,5 @@ public class FriendRequestController {
     void declineFriendRequest(@PathVariable long userId,@RequestBody  long senderId) throws UserNotFoundException {
         friendRequestService.declineFriendRequest(userId,senderId);
     }
+
 }

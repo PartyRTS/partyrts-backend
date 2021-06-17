@@ -18,4 +18,8 @@ public interface UserFriendRequestService {
     void acceptFriendRequest(long userId, long senderId) throws UserNotFoundException;
 
     void declineFriendRequest(long userId, long senderId) throws UserNotFoundException;
+
+    List<UserDto> getAllFriends(long userId) throws UserNotFoundException;
+
+    void deleteFriend(long userId, long senderId) throws UserNotFoundException;
 }

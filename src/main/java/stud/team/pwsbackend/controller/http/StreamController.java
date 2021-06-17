@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.service.StreamService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class StreamController {
     }
 
     @PostMapping
-    public StreamDto addStream(@RequestBody StreamDto streamDto) throws Exception {
+    public StreamDto addStream(@Valid @RequestBody StreamDto streamDto) throws Exception {
         return streamService.addStream(streamDto);
     }
 
@@ -89,7 +90,7 @@ public class StreamController {
     }
 
     @PostMapping("/{streamId}/addInsertVideo")
-    public void addInsertVideoToStream(@PathVariable Long streamId,@RequestBody InsertVideosDto insVideoDto) throws Exception {
+    public void addInsertVideoToStream(@PathVariable Long streamId,@Valid @RequestBody InsertVideosDto insVideoDto) throws Exception {
         streamService.addInsertVideoToStream(streamId,insVideoDto);
     }
 }

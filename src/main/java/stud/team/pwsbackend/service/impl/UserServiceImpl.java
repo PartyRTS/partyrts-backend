@@ -9,6 +9,7 @@ import stud.team.pwsbackend.domain.Password;
 import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.NewUserDto;
+import stud.team.pwsbackend.dto.UpdatePasswordRequestDto;
 import stud.team.pwsbackend.dto.UserDto;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
@@ -64,6 +65,19 @@ public class UserServiceImpl implements UserService {
     public void updateUser(long userId, UserDto userDto) throws UserNotFoundException {
         User user = findUserById(userId);
         userMapper.updateEntity(user, userDto);
+    }
+
+    @Override
+    public void updatePassword(long userId, UpdatePasswordRequestDto updPassword) throws UserNotFoundException {
+        var user = userRepository.findById(userId).orElseThrow();
+
+        String hash = user.getPassword().getPasswordHash();
+
+        if (passwordEncoder.matches(updPassword.getOldPassword(), hash)) {
+            Password userPassword = user.getPassword();
+            String passwordHash = passwordEncoder.encode(updPassword.getNewPassword());
+            userPassword.setPasswordHash(passwordHash);
+        }
     }
 
     public void deleteUser(long userId) {

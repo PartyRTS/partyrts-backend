@@ -66,6 +66,23 @@ public class UserFriendRequestServiceImpl implements UserFriendRequestService {
         deleteFriendRequest(userId, senderId);
     }
 
+    @Override
+    public List<UserDto> getAllFriends(long userId) throws UserNotFoundException {
+        var user = userRepository.findById(userId)
+                .orElseThrow();
+        return userMapper.mapToDto(user.getFriends());
+    }
+
+    @Override
+    public void deleteFriend(long userId, long friendId) throws UserNotFoundException {
+        var firstUser = userRepository.findById(userId)
+                .orElseThrow();
+        var secondUser = userRepository.findById(friendId)
+                .orElseThrow();
+        firstUser.getFriends().remove(secondUser);
+        secondUser.getFriends().remove(firstUser);
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

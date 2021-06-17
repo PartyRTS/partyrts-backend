@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.PlaylistDto;
 import stud.team.pwsbackend.service.PlaylistService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public PlaylistDto addPlaylist(@RequestBody PlaylistDto playlistDto) {
+    public PlaylistDto addPlaylist(@Valid @RequestBody PlaylistDto playlistDto) {
         return playlistService.addPlaylist(playlistDto);
     }
 

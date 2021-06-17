@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import stud.team.pwsbackend.domain.User;
 
+import javax.validation.constraints.NotEmpty;
+
 
 @Data
 @AllArgsConstructor
@@ -17,5 +19,6 @@ public class PlaylistDto {
 
     private String title;
 
+    @NotEmpty
     private Long idUser;
 }

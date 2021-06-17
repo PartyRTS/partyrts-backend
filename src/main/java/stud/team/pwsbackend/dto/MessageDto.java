@@ -10,6 +10,7 @@ import stud.team.pwsbackend.domain.User;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
@@ -17,10 +18,10 @@ import javax.persistence.ManyToOne;
 @Builder
 public class MessageDto {
     private Long idMessage;
-
+    @NotEmpty
     private Long text;
-
+    @NotEmpty
     private Long idUser;
-
+    @NotEmpty
     private Long idStream;
 }
