@@ -29,7 +29,7 @@ public class Stream {
     private Integer fullUsers;
 
     @Column(name = "current_number_video")
-    private Integer currentNumberVideo;
+    private Long currentNumberVideo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_playlist")

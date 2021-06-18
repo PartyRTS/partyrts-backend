@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.service.StreamService;
+import stud.team.pwsbackend.service.VoteService;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -15,9 +17,11 @@ import java.util.List;
 public class StreamController {
 
     private final StreamService streamService;
+    private final VoteService voteService;
 
-    public StreamController(StreamService streamService) {
+    public StreamController(StreamService streamService, VoteService voteService) {
         this.streamService = streamService;
+        this.voteService = voteService;
     }
 
     @GetMapping
@@ -98,4 +102,10 @@ public class StreamController {
     public List<StreamDto> findStreamsByTitle(@RequestParam("search") String search){
         return streamService.findStreamsByTitle(search);
     }
+
+    @GetMapping("/{streamId}/fullPlaylist")
+    public List<VideoWithNumb> getFullPlaylistByStream(@PathVariable Long streamId) throws Exception {
+        return streamService.getFullPlaylistByStream(streamId);
+    }
+
 }

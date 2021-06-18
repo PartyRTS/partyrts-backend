@@ -3,6 +3,7 @@ package stud.team.pwsbackend.mapper;
 import org.mapstruct.*;
 import stud.team.pwsbackend.domain.Video;
 import stud.team.pwsbackend.dto.VideoDto;
+import stud.team.pwsbackend.dto.VideoWithNumb;
 
 import java.util.List;
 
@@ -18,6 +19,12 @@ public interface VideoMapper {
             @Mapping(target="idUser", source="video.user.idUser")
     })
     VideoDto videoToDto(Video video);
+
+    VideoWithNumb videoToNumbVideo(Video video);
+
+    VideoDto numbVideoToVideo(VideoWithNumb videoWithNumb);
+
+    List<VideoDto> numbVideoToVideo(List<VideoWithNumb> videoWithNumb);
 
     List<Video> listDtoToListVideo(List<VideoDto> videoDtoList);
 

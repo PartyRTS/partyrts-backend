@@ -1,12 +1,16 @@
 package stud.team.pwsbackend.controller.http;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import stud.team.pwsbackend.domain.InsertVideos;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
+import stud.team.pwsbackend.repository.InsertVideosRepository;
 import stud.team.pwsbackend.service.impl.UploadContentService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/aws")

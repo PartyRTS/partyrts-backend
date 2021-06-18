@@ -6,8 +6,8 @@ import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.mapper.*;
 import stud.team.pwsbackend.repository.*;
-import stud.team.pwsbackend.service.InsertVideosService;
 import stud.team.pwsbackend.service.StreamService;
+import utils.FullPlaylistUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ public class StreamServiceImpl implements StreamService {
     private MessageMapper messageMapper;
     private CategoryMapper categoryMapper;
     private VoteMapper voteMapper;
+    private VideoMapper videoMapper;
     private VoteSkipMapper voteSkipMapper;
     private VoteAddMapper voteAddMapper;
     private InsertVideosMapper insVideosMapper;
@@ -57,6 +58,8 @@ public class StreamServiceImpl implements StreamService {
         Playlist playlist = playlistRepository.findById(streamDto.getIdPlaylist()).orElseThrow(Exception::new);
         stream.setUser(user);
         stream.setPlaylist(playlist);
+        stream.setActiveStream(true);
+        stream.setCurrentNumberVideo(playlist.getVideoHasPlaylists().get(0).getVideo().getIdVideo());
         stream = streamRepository.save(stream);
         return streamMapper.streamToDto(stream);
     }
@@ -186,6 +189,15 @@ public class StreamServiceImpl implements StreamService {
         return streamMapper.listStreamToListDto(streams);
     }
 
+    @Override
+    public List<VideoWithNumb> getFullPlaylistByStream(Long streamId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        List<InsertVideos> insertVideos = insVideosRepository.findVideosByStream(streamId);
+        List<VideoHasPlaylist> videos = stream.getPlaylist().getVideoHasPlaylists();
+        FullPlaylistUtil fullPlaylistUtil = new FullPlaylistUtil(insertVideos,videos,videoMapper);
+        return fullPlaylistUtil.getFullPlaylist();
+    }
+
 
     @Autowired
     public void setStreamRepository(StreamRepository streamRepository) {
@@ -265,5 +277,10 @@ public class StreamServiceImpl implements StreamService {
     @Autowired
     public void setInsVideosMapper(InsertVideosMapper insVideosMapper) {
         this.insVideosMapper = insVideosMapper;
+    }
+
+    @Autowired
+    public void setVideoMapper(VideoMapper videoMapper) {
+        this.videoMapper = videoMapper;
     }
 }

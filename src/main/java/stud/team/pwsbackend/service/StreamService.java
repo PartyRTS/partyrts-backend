@@ -1,6 +1,5 @@
 package stud.team.pwsbackend.service;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import stud.team.pwsbackend.dto.*;
 
 import java.util.List;
@@ -38,5 +37,7 @@ public interface StreamService {
     void addInsertVideoToStream(Long streamId,InsertVideosDto insVideoDto) throws Exception;
 
     List<StreamDto> findStreamsByTitle(String search);
+
+    List<VideoWithNumb> getFullPlaylistByStream(Long streamId) throws Exception;
 
 }

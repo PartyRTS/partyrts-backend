@@ -30,7 +30,7 @@ public class StreamDto {
     @NotEmpty
     private Integer fullUsers;
 
-    private Integer currentNumberVideo;
+    private Long currentNumberVideo;
     @NotEmpty
     private Long idPlaylist;
 

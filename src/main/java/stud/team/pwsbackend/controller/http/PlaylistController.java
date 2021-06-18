@@ -3,6 +3,7 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.PlaylistDto;
+import stud.team.pwsbackend.dto.VideoDto;
 import stud.team.pwsbackend.service.PlaylistService;
 
 import javax.validation.Valid;
@@ -43,5 +44,10 @@ public class PlaylistController {
     @DeleteMapping("/{playlistId}")
     public void deletePlaylistById(@PathVariable Long playlistId) {
         playlistService.deletePlaylistById(playlistId);
+    }
+
+    @GetMapping("/{playlistId}/videos")
+    public List<VideoDto> getVideosByPlaylist(@PathVariable Long playlistId) throws Exception {
+        return playlistService.getVideosByPlaylist(playlistId);
     }
 }
