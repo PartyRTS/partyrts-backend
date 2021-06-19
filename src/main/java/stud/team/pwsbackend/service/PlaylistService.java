@@ -14,7 +14,7 @@ public interface PlaylistService {
 
     PlaylistDto getPlaylistById(Long playlistId);
 
-    PlaylistDto addPlaylist(PlaylistDto playlistDto);
+    PlaylistDto addPlaylist(PlaylistDto playlistDto) throws UserNotFoundException;
 
     void deletePlaylistById(Long playlistId);
 

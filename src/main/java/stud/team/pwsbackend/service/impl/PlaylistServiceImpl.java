@@ -49,8 +49,10 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public PlaylistDto addPlaylist(PlaylistDto playlistDto) {
+    public PlaylistDto addPlaylist(PlaylistDto playlistDto) throws UserNotFoundException {
         Playlist playlist = playlistMapper.dtoToPlaylist(playlistDto);
+        User user = userRepository.findById(playlistDto.getIdUser()).orElseThrow();
+        playlist.setUser(user);
         playlist = playlistRepository.save(playlist);
         return playlistMapper.playlistToDto(playlist);
     }

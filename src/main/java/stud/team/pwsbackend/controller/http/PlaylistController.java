@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.dto.PlaylistDto;
 import stud.team.pwsbackend.dto.VideoDto;
+import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.service.PlaylistService;
 
 import javax.validation.Valid;
@@ -37,7 +38,7 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public PlaylistDto addPlaylist(@Valid @RequestBody PlaylistDto playlistDto) {
+    public PlaylistDto addPlaylist(@Valid @RequestBody PlaylistDto playlistDto) throws UserNotFoundException {
         return playlistService.addPlaylist(playlistDto);
     }
 
