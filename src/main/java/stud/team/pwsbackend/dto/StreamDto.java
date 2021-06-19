@@ -20,9 +20,9 @@ public class StreamDto {
     private String streamTitle;
 
     private Boolean privateStream;
-    @NotNull
+
     private Boolean activeStream;
-    @NotNull
+
     private Integer fullUsers;
 
     private Long currentNumberVideo;

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class MessageDto {
     private Long idMessage;
     @NotEmpty
-    private Long text;
+    private String text;
     @NotNull
     private Long idUser;
     @NotNull

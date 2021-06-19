@@ -18,13 +18,15 @@ public interface StreamService {
 
     List<MessageDto> getAllMessageByStream(Long streamId);
 
+    MessageDto addMessageToStream(Long streamId, MessageDto messageDto);
+
     List<CategoryDto> getAllCategoryByStream(Long streamId);
 
     List<VoteDto> getAllVoteByStream(Long streamId);
 
-    void addVoteAddToStream(Long streamId,VoteAddDto voteAddDto) throws Exception;
+    void addVoteAddToStream(Long streamId, VoteAddDto voteAddDto) throws Exception;
 
-    void addVoteSkipToStream(Long streamId,VoteSkipDto voteSkipDto) throws Exception;
+    void addVoteSkipToStream(Long streamId, VoteSkipDto voteSkipDto) throws Exception;
 
     List<VoteAddDto> getAllVoteAddByStream(Long streamId) throws Exception;
 
