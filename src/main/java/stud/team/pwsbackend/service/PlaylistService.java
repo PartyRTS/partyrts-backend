@@ -20,5 +20,7 @@ public interface PlaylistService {
 
     List<VideoDto> getVideosByPlaylist(Long playlistId) throws Exception;
 
+    void addVideoToPlaylist(Long playlistId,Long videoId) throws Exception;
+
     List<PlaylistDto> getAllPlaylistsByUser(Long userId) throws UserNotFoundException;
 }
