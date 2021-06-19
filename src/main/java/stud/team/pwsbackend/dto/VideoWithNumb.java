@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class VideoWithNumb {
     private String videoUrl;
 
     private String previewUrl;
-    @NotEmpty
+    @NotNull
     private Long idUser;
 
     private Integer numberVideo;

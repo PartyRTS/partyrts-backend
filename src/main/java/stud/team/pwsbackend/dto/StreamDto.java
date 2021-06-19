@@ -4,12 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import stud.team.pwsbackend.domain.Playlist;
-import stud.team.pwsbackend.domain.User;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -25,13 +20,13 @@ public class StreamDto {
     private String streamTitle;
 
     private Boolean privateStream;
-    @NotEmpty
+    @NotNull
     private Boolean activeStream;
-    @NotEmpty
+    @NotNull
     private Integer fullUsers;
 
     private Long currentNumberVideo;
-    @NotEmpty
+    @NotNull
     private Long idPlaylist;
 
     private Long idUser;
