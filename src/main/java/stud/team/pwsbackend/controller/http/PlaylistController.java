@@ -50,4 +50,9 @@ public class PlaylistController {
     public List<VideoDto> getVideosByPlaylist(@PathVariable Long playlistId) throws Exception {
         return playlistService.getVideosByPlaylist(playlistId);
     }
+
+    @PostMapping("/{playlistId}/addVideo")
+    public void addVideoToPlaylist(@PathVariable Long playlistId,@RequestBody Long videoId) throws Exception {
+        playlistService.addVideoToPlaylist(playlistId,videoId);
+    }
 }
