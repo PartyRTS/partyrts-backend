@@ -1,6 +1,7 @@
 package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
@@ -9,11 +10,13 @@ import stud.team.pwsbackend.repository.*;
 import stud.team.pwsbackend.service.StreamService;
 import utils.FullPlaylistUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class StreamServiceImpl implements StreamService {
 
     private StreamRepository streamRepository;
@@ -34,6 +37,7 @@ public class StreamServiceImpl implements StreamService {
     private VoteSkipMapper voteSkipMapper;
     private VoteAddMapper voteAddMapper;
     private InsertVideosMapper insVideosMapper;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public List<StreamDto> getAllStream() {
@@ -88,10 +92,14 @@ public class StreamServiceImpl implements StreamService {
         var stream = streamRepository.findById(streamId).orElseThrow();
         stream.getMessages().add(message);
         message.setStream(stream);
+
         var user = userRepository.findById(messageDto.getIdUser()).orElseThrow();
         message.setUser(user);
+
         message = messageRepository.save(message);
-        return messageMapper.mapToDto(message);
+        messageDto = messageMapper.mapToDto(message);
+        simpMessagingTemplate.convertAndSend("/topic/streams/" + streamId + "/messages", messageDto);
+        return messageDto;
     }
 
     @Override
@@ -302,5 +310,10 @@ public class StreamServiceImpl implements StreamService {
     @Autowired
     public void setMessageRepository(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
+    }
+
+    @Autowired
+    public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 }
