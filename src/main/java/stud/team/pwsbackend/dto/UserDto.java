@@ -28,6 +28,8 @@ public class UserDto {
 
     private String logoUrl;
 
+    private Boolean banned;
+
     private LocalDate registrationDate;
 
     private LocalDate birthdayDate;
