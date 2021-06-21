@@ -89,7 +89,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public List<UserDto> findUsersByName(@RequestParam("search") String search){
+    public List<UserDto> findUsersByName(@RequestParam("search") String search) {
         return userService.findUsersByName(search);
     }
 
@@ -99,23 +99,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/playlists")
-    public List<PlaylistDto> getAllPlaylistsByUser(@PathVariable Long userId) throws UserNotFoundException{
+    public List<PlaylistDto> getAllPlaylistsByUser(@PathVariable Long userId) throws UserNotFoundException {
         return playlistService.getAllPlaylistsByUser(userId);
-    }
-
-    @PutMapping("/{userId}/addRole")
-    public void addRoleToUser(@PathVariable long userId,@RequestBody long roleId) throws UserNotFoundException {
-        userService.addRoleToUser(userId,roleId);
-    }
-
-    @DeleteMapping("/{userId}/deleteRole")
-    public void deleteRoleByUser(@PathVariable long userId,@RequestBody long roleId) throws UserNotFoundException {
-        userService.deleteRoleByUser(userId,roleId);
-    }
-
-    @PutMapping("/{userId}/setBan")
-    public void setBanStatusByUser(@PathVariable long userId,@RequestBody boolean ban) throws UserNotFoundException {
-        userService.setBanStatusByUser(userId,ban);
     }
 
     @GetMapping("/{userId}/roles")
@@ -123,4 +108,18 @@ public class UserController {
         return userService.getAllRolesByUser(userId);
     }
 
+    @PostMapping("/{userId}/roles")
+    public void addRoleToUser(@PathVariable long userId, @RequestBody long roleId) throws UserNotFoundException {
+        userService.addRoleToUser(userId, roleId);
+    }
+
+    @DeleteMapping("/{userId}/roles/{roleId}")
+    public void deleteRoleByUser(@PathVariable long userId, @PathVariable long roleId) throws UserNotFoundException {
+        userService.deleteRoleByUser(userId, roleId);
+    }
+
+    @PutMapping("/{userId}/ban")
+    public void setBanStatusByUser(@PathVariable long userId, @RequestBody boolean ban) throws UserNotFoundException {
+        userService.setBanStatusByUser(userId, ban);
+    }
 }
