@@ -32,6 +32,9 @@ public class User {
 
     private String logoUrl;
 
+    @Column(name = "banned")
+    private Boolean banned = false;
+
     @Column(nullable = false)
     private LocalDate registrationDate = LocalDate.now();
 

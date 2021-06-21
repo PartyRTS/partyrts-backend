@@ -29,6 +29,12 @@ public interface UserService {
 
     void deleteUser(long userId) throws UserNotFoundException;
 
+    void addRoleToUser(long userId,long roleId) throws UserNotFoundException;
+
+    void deleteRoleByUser(long userId,long roleId) throws UserNotFoundException;
+
+    void setBanStatusByUser(long userId,boolean ban) throws UserNotFoundException;
+
     UserDto login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException;
 
     UserDto register(NewUserDto reguserDto);

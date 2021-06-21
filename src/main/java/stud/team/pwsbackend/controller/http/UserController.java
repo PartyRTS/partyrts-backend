@@ -104,4 +104,19 @@ public class UserController {
         return playlistService.getAllPlaylistsByUser(userId);
     }
 
+    @PutMapping("/{userId}/addRole")
+    public void addRoleToUser(@PathVariable long userId,@RequestBody long roleId) throws UserNotFoundException {
+        userService.addRoleToUser(userId,roleId);
+    }
+
+    @DeleteMapping("/{userId}/deleteRole")
+    public void deleteRoleByUser(@PathVariable long userId,@RequestBody long roleId) throws UserNotFoundException {
+        userService.deleteRoleByUser(userId,roleId);
+    }
+
+    @PutMapping("/{userId}/setBan")
+    public void setBanStatusByUser(@PathVariable long userId,@RequestBody boolean ban) throws UserNotFoundException {
+        userService.setBanStatusByUser(userId,ban);
+    }
+
 }

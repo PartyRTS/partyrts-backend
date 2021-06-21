@@ -84,6 +84,26 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
     }
 
+    @Override
+    public void addRoleToUser(long userId, long roleId) throws UserNotFoundException {
+        var user = userRepository.findById(userId).orElseThrow();
+        var role = globalRoleRepository.findById(roleId).orElseThrow();
+        user.getGlobalRoles().add(role);
+    }
+
+    @Override
+    public void deleteRoleByUser(long userId, long roleId) throws UserNotFoundException {
+        var user = userRepository.findById(userId).orElseThrow();
+        var role = globalRoleRepository.findById(roleId).orElseThrow();
+        user.getGlobalRoles().remove(role);
+    }
+
+    @Override
+    public void setBanStatusByUser(long userId, boolean ban) throws UserNotFoundException {
+        var user = userRepository.findById(userId).orElseThrow();
+        user.setBanned(ban);
+    }
+
     private User findUserById(long userId) throws UserNotFoundException {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
