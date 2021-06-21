@@ -76,7 +76,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "id_global_role"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<GlobalRole> globalRoles = new HashSet<>();
+    private List<GlobalRole> globalRoles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Stream> usersStreams = new ArrayList<>();

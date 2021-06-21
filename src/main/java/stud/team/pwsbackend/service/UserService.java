@@ -3,10 +3,7 @@ package stud.team.pwsbackend.service;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.User;
-import stud.team.pwsbackend.dto.LoginRequestDto;
-import stud.team.pwsbackend.dto.NewUserDto;
-import stud.team.pwsbackend.dto.UpdatePasswordRequestDto;
-import stud.team.pwsbackend.dto.UserDto;
+import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 
@@ -40,4 +37,6 @@ public interface UserService {
     UserDto register(NewUserDto reguserDto);
 
     List<UserDto> findUsersByName(String searchString);
+
+    List<GlobalRoleDto> getAllRolesByUser(long userId) throws UserNotFoundException;
 }

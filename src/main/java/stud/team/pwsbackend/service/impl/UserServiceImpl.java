@@ -7,12 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.Password;
 import stud.team.pwsbackend.domain.User;
-import stud.team.pwsbackend.dto.LoginRequestDto;
-import stud.team.pwsbackend.dto.NewUserDto;
-import stud.team.pwsbackend.dto.UpdatePasswordRequestDto;
-import stud.team.pwsbackend.dto.UserDto;
+import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
+import stud.team.pwsbackend.mapper.GlobalRoleMapper;
 import stud.team.pwsbackend.mapper.UserMapper;
 import stud.team.pwsbackend.repository.GlobalRoleRepository;
 import stud.team.pwsbackend.repository.UserRepository;
@@ -31,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private GlobalRoleRepository globalRoleRepository;
     private UserMapper userMapper;
+    private GlobalRoleMapper roleMapper;
     private PasswordEncoder passwordEncoder;
 
 
@@ -133,7 +132,7 @@ public class UserServiceImpl implements UserService {
                 .findByTitle("USER")
                 .orElseThrow(IllegalStateException::new);
 
-        user.setGlobalRoles(Set.of(userRole));
+        user.setGlobalRoles(List.of(userRole));
         return userMapper.mapToDto(user);
     }
 
@@ -141,6 +140,12 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findUsersByName(String search) {
         var users = userRepository.findUserByName(search);
         return userMapper.mapToDto(users);
+    }
+
+    @Override
+    public List<GlobalRoleDto> getAllRolesByUser(long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow();
+        return roleMapper.mapToDto(user.getGlobalRoles());
     }
 
     @Autowired
@@ -161,5 +166,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setGlobalRoleRepository(GlobalRoleRepository globalRoleRepository) {
         this.globalRoleRepository = globalRoleRepository;
+    }
+
+    @Autowired
+    public void setRoleMapper(GlobalRoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
     }
 }
