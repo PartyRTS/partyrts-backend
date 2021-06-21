@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import stud.team.pwsbackend.domain.Video;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +20,8 @@ public class InsertVideosDto {
     private Integer numberPrevVideo;
 
     private Integer numberNextVideo;
-    @NotEmpty
+    @NotNull
     private Long idCurrentVideo;
-    @NotEmpty
+    @NotNull
     private Long idStream;
 }

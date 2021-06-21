@@ -4,13 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import stud.team.pwsbackend.domain.Stream;
-import stud.team.pwsbackend.domain.User;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +15,9 @@ import javax.validation.constraints.NotEmpty;
 public class MessageDto {
     private Long idMessage;
     @NotEmpty
-    private Long text;
-    @NotEmpty
+    private String text;
+    @NotNull
     private Long idUser;
-    @NotEmpty
+    @NotNull
     private Long idStream;
 }

@@ -1,6 +1,7 @@
 package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
@@ -9,11 +10,13 @@ import stud.team.pwsbackend.repository.*;
 import stud.team.pwsbackend.service.StreamService;
 import utils.FullPlaylistUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class StreamServiceImpl implements StreamService {
 
     private StreamRepository streamRepository;
@@ -25,6 +28,7 @@ public class StreamServiceImpl implements StreamService {
     private PlaylistRepository playlistRepository;
     private CategoryRepository categoryRepository;
     private InsertVideosRepository insVideosRepository;
+    private MessageRepository messageRepository;
     private StreamMapper streamMapper;
     private MessageMapper messageMapper;
     private CategoryMapper categoryMapper;
@@ -33,6 +37,7 @@ public class StreamServiceImpl implements StreamService {
     private VoteSkipMapper voteSkipMapper;
     private VoteAddMapper voteAddMapper;
     private InsertVideosMapper insVideosMapper;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public List<StreamDto> getAllStream() {
@@ -52,7 +57,7 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
-    public StreamDto addStream(StreamDto streamDto) throws Exception{
+    public StreamDto addStream(StreamDto streamDto) throws Exception {
         Stream stream = streamMapper.dtoToStream(streamDto);
         User user = userRepository.findById(streamDto.getIdUser()).orElseThrow(Exception::new);
         Playlist playlist = playlistRepository.findById(streamDto.getIdPlaylist()).orElseThrow(Exception::new);
@@ -69,6 +74,8 @@ public class StreamServiceImpl implements StreamService {
         streamRepository.deleteById(streamId);
     }
 
+
+    // FIXME кидай ошибку, если сущности не существует
     @Override
     public List<MessageDto> getAllMessageByStream(Long streamId) {
         Optional<Stream> stream = streamRepository.findById(streamId);
@@ -77,6 +84,22 @@ public class StreamServiceImpl implements StreamService {
             return messageMapper.mapToDto(messages);
         }
         return null;
+    }
+
+    @Override
+    public MessageDto addMessageToStream(Long streamId, MessageDto messageDto) {
+        var message = messageMapper.mapToEntity(messageDto);
+        var stream = streamRepository.findById(streamId).orElseThrow();
+        stream.getMessages().add(message);
+        message.setStream(stream);
+
+        var user = userRepository.findById(messageDto.getIdUser()).orElseThrow();
+        message.setUser(user);
+
+        message = messageRepository.save(message);
+        messageDto = messageMapper.mapToDto(message);
+        simpMessagingTemplate.convertAndSend("/topic/streams/" + streamId + "/messages", messageDto);
+        return messageDto;
     }
 
     @Override
@@ -103,7 +126,7 @@ public class StreamServiceImpl implements StreamService {
     public void addVoteAddToStream(Long streamId, VoteAddDto voteAddDto) throws Exception {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
         Video video = videoRepository.findById(voteAddDto.getIdAddVideo()).orElseThrow(Exception::new);
-        Vote vote= new Vote();
+        Vote vote = new Vote();
         vote.setStream(stream);
         vote.setCloseVote(false);
         vote = voteRepository.save(vote);
@@ -117,7 +140,7 @@ public class StreamServiceImpl implements StreamService {
     @Override
     public void addVoteSkipToStream(Long streamId, VoteSkipDto voteSkipDto) throws Exception {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
-        Vote vote= new Vote();
+        Vote vote = new Vote();
         vote.setStream(stream);
         vote.setCloseVote(false);
         vote = voteRepository.save(vote);
@@ -131,8 +154,8 @@ public class StreamServiceImpl implements StreamService {
     public List<VoteAddDto> getAllVoteAddByStream(Long streamId) throws Exception {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
         List<VoteAddDto> voteAddDtos = new ArrayList<>();
-        for(Vote vote : stream.getVote()){
-            if(vote.getVoteAdds() != null){
+        for (Vote vote : stream.getVote()) {
+            if (vote.getVoteAdds() != null) {
                 voteAddDtos.add(voteAddMapper.voteAddToDto(vote.getVoteAdds()));
             }
         }
@@ -143,8 +166,8 @@ public class StreamServiceImpl implements StreamService {
     public List<VoteSkipDto> getAllVoteSkipByStream(Long streamId) throws Exception {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
         List<VoteSkipDto> voteSkipDtos = new ArrayList<>();
-        for(Vote vote : stream.getVote()){
-            if(vote.getVoteSkips() != null){
+        for (Vote vote : stream.getVote()) {
+            if (vote.getVoteSkips() != null) {
                 voteSkipDtos.add(voteSkipMapper.voteSkipToDto(vote.getVoteSkips()));
             }
         }
@@ -157,7 +180,7 @@ public class StreamServiceImpl implements StreamService {
         List<Category> categories = categoryRepository.findCategoriesIds(categoriesId);
         stream.setCategories(categories);
         streamRepository.save(stream);
-        for(Category category : categories){
+        for (Category category : categories) {
             category.getStreams().add(stream);
             categoryRepository.save(category);
         }
@@ -194,7 +217,7 @@ public class StreamServiceImpl implements StreamService {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
         List<InsertVideos> insertVideos = insVideosRepository.findVideosByStream(streamId);
         List<VideoHasPlaylist> videos = stream.getPlaylist().getVideoHasPlaylists();
-        FullPlaylistUtil fullPlaylistUtil = new FullPlaylistUtil(insertVideos,videos,videoMapper);
+        FullPlaylistUtil fullPlaylistUtil = new FullPlaylistUtil(insertVideos, videos, videoMapper);
         return fullPlaylistUtil.getFullPlaylist();
     }
 
@@ -282,5 +305,15 @@ public class StreamServiceImpl implements StreamService {
     @Autowired
     public void setVideoMapper(VideoMapper videoMapper) {
         this.videoMapper = videoMapper;
+    }
+
+    @Autowired
+    public void setMessageRepository(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
+
+    @Autowired
+    public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 }

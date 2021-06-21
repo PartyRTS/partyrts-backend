@@ -16,8 +16,8 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMessage;
 
-    @Column(unique = true, nullable = false)
-    private Long text;
+    @Column(nullable = false)
+    private String text;
 
     @ManyToOne
     @JoinColumn(name = "id_user")

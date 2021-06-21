@@ -7,7 +7,6 @@ import stud.team.pwsbackend.service.StreamService;
 import stud.team.pwsbackend.service.VoteService;
 
 import javax.validation.Valid;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -44,13 +43,20 @@ public class StreamController {
         return streamService.addStream(streamDto);
     }
 
-    @DeleteMapping("/{streamId}/messages")
+    @DeleteMapping("/{streamId}")
     public void deleteStreamById(@PathVariable Long streamId) {
         streamService.deleteStreamById(streamId);
     }
 
+    @GetMapping("/{streamId}/messages")
     public List<MessageDto> getAllMessageByStream(@PathVariable Long streamId) {
         return streamService.getAllMessageByStream(streamId);
+    }
+
+    @PostMapping("/{streamId}/messages")
+    public MessageDto addMessageToStream(@PathVariable Long streamId, @RequestBody MessageDto messageDto) {
+        System.out.println(messageDto);
+        return streamService.addMessageToStream(streamId, messageDto);
     }
 
     @GetMapping("/{streamId}/categories")
@@ -64,13 +70,13 @@ public class StreamController {
     }
 
     @PostMapping("/{streamId}/addVoteAdd")
-    public void addVoteAddToStream(@PathVariable Long streamId,@RequestBody VoteAddDto voteAddDto) throws Exception {
-        streamService.addVoteAddToStream(streamId,voteAddDto);
+    public void addVoteAddToStream(@PathVariable Long streamId, @RequestBody VoteAddDto voteAddDto) throws Exception {
+        streamService.addVoteAddToStream(streamId, voteAddDto);
     }
 
     @PostMapping("/{streamId}/addSkipVote")
-    public void addVoteSkipToStream(@PathVariable Long streamId,@RequestBody VoteSkipDto voteSkipDto) throws Exception {
-        streamService.addVoteSkipToStream(streamId,voteSkipDto);
+    public void addVoteSkipToStream(@PathVariable Long streamId, @RequestBody VoteSkipDto voteSkipDto) throws Exception {
+        streamService.addVoteSkipToStream(streamId, voteSkipDto);
     }
 
     @GetMapping("/{streamId}/voteAdds")
@@ -84,22 +90,22 @@ public class StreamController {
     }
 
     @PostMapping("/{streamId}/addCategories")
-    public void addCategoriesToStream(@PathVariable Long streamId,@RequestBody List<Long> categoriesId) throws Exception {
-        streamService.addCategoriesToStream(streamId,categoriesId);
+    public void addCategoriesToStream(@PathVariable Long streamId, @RequestBody List<Long> categoriesId) throws Exception {
+        streamService.addCategoriesToStream(streamId, categoriesId);
     }
 
     @PostMapping("/{streamId}/addWatcher/{userId}")
-    public void addUserToStream(@PathVariable Long streamId,@PathVariable  Long userId) throws Exception {
-        streamService.addUserToStream(streamId,userId);
+    public void addUserToStream(@PathVariable Long streamId, @PathVariable Long userId) throws Exception {
+        streamService.addUserToStream(streamId, userId);
     }
 
     @PostMapping("/{streamId}/addInsertVideo")
-    public void addInsertVideoToStream(@PathVariable Long streamId,@Valid @RequestBody InsertVideosDto insVideoDto) throws Exception {
-        streamService.addInsertVideoToStream(streamId,insVideoDto);
+    public void addInsertVideoToStream(@PathVariable Long streamId, @Valid @RequestBody InsertVideosDto insVideoDto) throws Exception {
+        streamService.addInsertVideoToStream(streamId, insVideoDto);
     }
 
     @GetMapping("/search")
-    public List<StreamDto> findStreamsByTitle(@RequestParam("search") String search){
+    public List<StreamDto> findStreamsByTitle(@RequestParam("search") String search) {
         return streamService.findStreamsByTitle(search);
     }
 
