@@ -18,6 +18,8 @@ public interface StreamService {
 
     List<MessageDto> getAllMessageByStream(Long streamId);
 
+    void setNextVideoStream(Long streamId) throws Exception;
+
     MessageDto addMessageToStream(Long streamId, MessageDto messageDto);
 
     List<CategoryDto> getAllCategoryByStream(Long streamId);

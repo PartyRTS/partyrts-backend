@@ -1,8 +1,10 @@
 package stud.team.pwsbackend.domain;
 
 import lombok.Data;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,12 @@ public class Stream {
 
     @Column(name = "active_stream")
     private Boolean activeStream;
+
+    @Column(name = "stop_stream")
+    private Boolean stopStream;
+
+    @Column(name = "time_stream")
+    private LocalTime timeStream;
 
     @Column(name = "full_users")
     private Integer fullUsers;

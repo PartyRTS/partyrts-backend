@@ -87,6 +87,25 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
+    public void setNextVideoStream(Long streamId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow();
+        boolean set = false;
+        for(VideoWithNumb video : getFullPlaylistByStream(streamId)){
+            if(set){
+                stream.setCurrentNumberVideo(video.getIdVideo());
+                set = false;
+                break;
+            }
+            if(stream.getCurrentNumberVideo().equals(video.getIdVideo())){
+                set = true;
+            }
+        }
+        if(set){
+            stream.setActiveStream(false);
+        }
+    }
+
+    @Override
     public MessageDto addMessageToStream(Long streamId, MessageDto messageDto) {
         var message = messageMapper.mapToEntity(messageDto);
         var stream = streamRepository.findById(streamId).orElseThrow();

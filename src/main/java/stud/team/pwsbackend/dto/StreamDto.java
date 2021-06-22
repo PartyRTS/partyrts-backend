@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 
 
 @Data
@@ -22,6 +24,10 @@ public class StreamDto {
     private Boolean privateStream;
 
     private Boolean activeStream;
+
+    private Boolean stopStream;
+
+    private LocalTime timeStream;
 
     private Integer fullUsers;
 

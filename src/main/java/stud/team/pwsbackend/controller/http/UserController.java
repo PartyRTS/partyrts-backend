@@ -123,4 +123,9 @@ public class UserController {
         return userService.getAllRolesByUser(userId);
     }
 
+    @GetMapping("/{userId}/activeStream")
+    public StreamDto getActiveStream(@PathVariable long userId) throws UserNotFoundException {
+        return userService.getActiveStream(userId);
+    }
+
 }

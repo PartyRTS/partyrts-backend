@@ -39,4 +39,6 @@ public interface UserService {
     List<UserDto> findUsersByName(String searchString);
 
     List<GlobalRoleDto> getAllRolesByUser(long userId) throws UserNotFoundException;
+
+    StreamDto getActiveStream(long userId) throws UserNotFoundException;
 }

@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import stud.team.pwsbackend.domain.Password;
+import stud.team.pwsbackend.domain.Stream;
 import stud.team.pwsbackend.domain.User;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.mapper.GlobalRoleMapper;
+import stud.team.pwsbackend.mapper.StreamMapper;
 import stud.team.pwsbackend.mapper.UserMapper;
 import stud.team.pwsbackend.repository.GlobalRoleRepository;
 import stud.team.pwsbackend.repository.UserRepository;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private GlobalRoleRepository globalRoleRepository;
     private UserMapper userMapper;
     private GlobalRoleMapper roleMapper;
+    private StreamMapper streamMapper;
     private PasswordEncoder passwordEncoder;
 
 
@@ -148,6 +151,17 @@ public class UserServiceImpl implements UserService {
         return roleMapper.mapToDto(user.getGlobalRoles());
     }
 
+    @Override
+    public StreamDto getActiveStream(long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow();
+        for(Stream stream : user.getStreams()){
+            if(stream.getActiveStream()){
+                return streamMapper.streamToDto(stream);
+            }
+        }
+        return null;
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -171,5 +185,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setRoleMapper(GlobalRoleMapper roleMapper) {
         this.roleMapper = roleMapper;
+    }
+
+    @Autowired
+    public void setStreamMapper(StreamMapper streamMapper) {
+        this.streamMapper = streamMapper;
     }
 }

@@ -69,6 +69,11 @@ public class StreamController {
         return streamService.getAllVoteByStream(streamId);
     }
 
+    @PutMapping("/{streamId}/next")
+    public void setNextVideoStream(@PathVariable Long streamId) throws Exception {
+        streamService.setNextVideoStream(streamId);
+    }
+
     @PostMapping("/{streamId}/addVoteAdd")
     public void addVoteAddToStream(@PathVariable Long streamId, @RequestBody VoteAddDto voteAddDto) throws Exception {
         streamService.addVoteAddToStream(streamId, voteAddDto);
