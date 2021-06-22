@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import stud.team.pwsbackend.service.impl.StatisticService;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 @RestController
@@ -21,12 +22,22 @@ public class StatisticController {
     }
 
     @GetMapping("/registerUser")
-    public Map<Long,String> getUsersByRegisterDate(){
+    public Map<String,Integer> getUsersByRegisterDate(){
         return statisticService.getUsersByRegisterDate();
     }
 
     @GetMapping("/usersOnStream")
-    public Map<Long,String> getUsersOnStream(){
+    public Map<String,Integer> getUsersOnStream(){
         return statisticService.getUsersOnStream();
+    }
+
+    @GetMapping("/countStreams")
+    public Map<String,Integer> getCountStreams(){
+        return statisticService.getCountStreams();
+    }
+
+    @GetMapping("/votesOnStream")
+    public Map<String,Double> getVotesOnStream(){
+        return statisticService.getVotesOnStream();
     }
 }
