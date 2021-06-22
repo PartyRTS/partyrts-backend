@@ -17,8 +17,6 @@ import javax.persistence.ManyToOne;
 @Builder
 public class UserVoteDto {
 
-    private Long idUserVote;
-
     private Boolean votePlus;
 
     private Long idVote;

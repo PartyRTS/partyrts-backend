@@ -59,7 +59,7 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
                 new Trigger() {
                     @Override
                     public Date nextExecutionTime(TriggerContext context) {
-                        int plus = 4000;
+                        int plus = 40000;
                         if(!votesMap.isEmpty()){
                             Duration duration = null;
                             LocalDateTime time = LocalDateTime.now();

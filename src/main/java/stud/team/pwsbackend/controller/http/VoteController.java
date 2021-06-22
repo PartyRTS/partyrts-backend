@@ -3,6 +3,7 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import stud.team.pwsbackend.domain.Vote;
+import stud.team.pwsbackend.dto.UserVoteDto;
 import stud.team.pwsbackend.dto.VoteDto;
 import stud.team.pwsbackend.service.VoteService;
 
@@ -34,4 +35,10 @@ public class VoteController {
     public void closeVoteById(@PathVariable Long voteId) throws Exception {
         voteService.closeVoteById(voteId);
     }
+
+    @PostMapping("/{voteId}/addUserVote")
+    public UserVoteDto addUserVoteToVote(@PathVariable Long voteId,@RequestBody UserVoteDto userVoteDto) throws Exception {
+        return voteService.addUserVoteToVote(voteId,userVoteDto);
+    }
+
 }

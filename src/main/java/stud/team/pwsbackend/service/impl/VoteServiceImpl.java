@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
+import stud.team.pwsbackend.mapper.UserVoteMapper;
 import stud.team.pwsbackend.mapper.VoteMapper;
 import stud.team.pwsbackend.repository.*;
 import stud.team.pwsbackend.service.StreamService;
@@ -20,8 +21,11 @@ public class VoteServiceImpl implements VoteService {
 
     private VoteRepository voteRepository;
     private InsertVideosRepository insRepository;
+    private UserRepository userRepository;
+    private UserVoteRepository userVoteRepository;
     private StreamService streamService;
     private VoteMapper voteMapper;
+    private UserVoteMapper userVoteMapper;
 
 
     @Override
@@ -44,15 +48,42 @@ public class VoteServiceImpl implements VoteService {
             Stream stream = vote.getStream();
             int size = stream.getPlaylist().getVideoHasPlaylists().size() + stream.getInsertVideos().size();
             if (vote.getVoteSkips() != null) {
-                VoteSkip voteSkip = vote.getVoteSkips();
-                closeSkipVote(voteSkip.getNumberSkipVideo(), stream,size);
+                if(getPercentPlusVotes(voteId) >= 0.49){
+                    VoteSkip voteSkip = vote.getVoteSkips();
+                    closeSkipVote(voteSkip.getNumberSkipVideo(), stream,size);
+                }
                 vote.setCloseVote(true);
             } else {
-                VoteAdd voteAdd = vote.getVoteAdds();
-                closeAddVote(voteAdd.getNumberPrevVideo(), stream, voteAdd.getAddVideo(),size);
+                if(getPercentPlusVotes(voteId) >= 0.49) {
+                    VoteAdd voteAdd = vote.getVoteAdds();
+                    closeAddVote(voteAdd.getNumberPrevVideo(), stream, voteAdd.getAddVideo(), size);
+                }
                 vote.setCloseVote(true);
             }
         }
+    }
+
+    @Override
+    public double getPercentPlusVotes(Long voteId) throws Exception {
+        Vote vote = voteRepository.findById(voteId).orElseThrow(Exception::new);
+        int usersCount = vote.getStream().getUsers().size() + 1;
+        Long plusCount = userVoteRepository.findCountPlusVotes(voteId);
+        if(plusCount != null){
+            return (double) plusCount/usersCount;
+        }
+        return 0;
+    }
+
+    @Override
+    public UserVoteDto addUserVoteToVote(Long voteId, UserVoteDto userVoteDto) throws Exception {
+        Vote vote = voteRepository.findById(voteId).orElseThrow();
+        User user = userRepository.findById(userVoteDto.getIdUser()).orElseThrow();
+        UserVote userVote = new UserVote();
+        userVote.setVotePlus(userVoteDto.getVotePlus());
+        userVote.setVote(vote);
+        userVote.setUser(user);
+        userVote = userVoteRepository.save(userVote);
+        return userVoteMapper.userVoteToDto(userVote);
     }
 
     public void closeSkipVote(Integer numberSkip,Stream stream,int size) throws Exception {
@@ -138,5 +169,20 @@ public class VoteServiceImpl implements VoteService {
     @Autowired
     public void setVoteMapper(VoteMapper voteMapper) {
         this.voteMapper = voteMapper;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setUserVoteRepository(UserVoteRepository userVoteRepository) {
+        this.userVoteRepository = userVoteRepository;
+    }
+
+    @Autowired
+    public void setUserVoteMapper(UserVoteMapper userVoteMapper) {
+        this.userVoteMapper = userVoteMapper;
     }
 }
