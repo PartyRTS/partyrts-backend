@@ -3,6 +3,7 @@ package stud.team.pwsbackend.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import stud.team.pwsbackend.config.DynamicSchedulingConfig;
 import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.mapper.*;
@@ -11,6 +12,7 @@ import stud.team.pwsbackend.service.StreamService;
 import utils.FullPlaylistUtil;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,7 @@ public class StreamServiceImpl implements StreamService {
     private VoteAddMapper voteAddMapper;
     private InsertVideosMapper insVideosMapper;
     private SimpMessagingTemplate simpMessagingTemplate;
+    private DynamicSchedulingConfig dynamicSchedulingConfig;
 
     @Override
     public List<StreamDto> getAllStream() {
@@ -150,30 +153,40 @@ public class StreamServiceImpl implements StreamService {
 
     @Override
     public void addVoteAddToStream(Long streamId, VoteAddDto voteAddDto) throws Exception {
-        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
-        Video video = videoRepository.findById(voteAddDto.getIdAddVideo()).orElseThrow(Exception::new);
-        Vote vote = new Vote();
-        vote.setStream(stream);
-        vote.setCloseVote(false);
-        vote = voteRepository.save(vote);
-        VoteAdd voteAdd = new VoteAdd();
-        voteAdd.setNumberPrevVideo(voteAddDto.getNumberPrevVideo());
-        voteAdd.setAddVideo(video);
-        voteAdd.setVote(vote);
-        voteAddRepository.save(voteAdd);
+        if(!checkActiveVoteOnStream(streamId)) {
+            Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+            Video video = videoRepository.findById(voteAddDto.getIdAddVideo()).orElseThrow(Exception::new);
+            Vote vote = new Vote();
+            vote.setStream(stream);
+            vote.setCloseVote(false);
+            vote = voteRepository.save(vote);
+            VoteAdd voteAdd = new VoteAdd();
+            voteAdd.setNumberPrevVideo(voteAddDto.getNumberPrevVideo());
+            voteAdd.setAddVideo(video);
+            voteAdd.setVote(vote);
+            voteAddRepository.save(voteAdd);
+            dynamicSchedulingConfig.addVoteToMap(vote.getIdVote(), LocalDateTime.now().plusMinutes(1));
+        }else{
+            throw new Exception("This stream already exist active vote.");
+        }
     }
 
     @Override
     public void addVoteSkipToStream(Long streamId, VoteSkipDto voteSkipDto) throws Exception {
-        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
-        Vote vote = new Vote();
-        vote.setStream(stream);
-        vote.setCloseVote(false);
-        vote = voteRepository.save(vote);
-        VoteSkip voteSkip = new VoteSkip();
-        voteSkip.setNumberSkipVideo(voteSkipDto.getNumberSkipVideo());
-        voteSkip.setVote(vote);
-        voteSkipRepository.save(voteSkip);
+        if(!checkActiveVoteOnStream(streamId)) {
+            Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+            Vote vote = new Vote();
+            vote.setStream(stream);
+            vote.setCloseVote(false);
+            vote = voteRepository.save(vote);
+            VoteSkip voteSkip = new VoteSkip();
+            voteSkip.setNumberSkipVideo(voteSkipDto.getNumberSkipVideo());
+            voteSkip.setVote(vote);
+            voteSkipRepository.save(voteSkip);
+            dynamicSchedulingConfig.addVoteToMap(vote.getIdVote(), LocalDateTime.now().plusMinutes(1));
+        }else{
+            throw new Exception("This stream already exist active vote.");
+        }
     }
 
     @Override
@@ -198,6 +211,18 @@ public class StreamServiceImpl implements StreamService {
             }
         }
         return voteSkipDtos;
+    }
+
+    @Override
+    public VoteDto getActiveVoteByStream(Long streamId) throws Exception {
+        Optional<Vote> vote = voteRepository.findActiveVoteByStream(streamId);
+        return vote.map(value -> voteMapper.voteToDto(value)).orElse(null);
+    }
+
+    @Override
+    public boolean checkActiveVoteOnStream(Long streamId) throws Exception {
+        Optional<Vote> vote = voteRepository.findActiveVoteByStream(streamId);
+        return vote.isPresent();
     }
 
     @Override
@@ -341,5 +366,10 @@ public class StreamServiceImpl implements StreamService {
     @Autowired
     public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+    }
+
+    @Autowired
+    public void setDynamicSchedulingConfig(DynamicSchedulingConfig dynamicSchedulingConfig) {
+        this.dynamicSchedulingConfig = dynamicSchedulingConfig;
     }
 }

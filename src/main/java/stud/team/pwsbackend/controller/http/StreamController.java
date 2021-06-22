@@ -2,12 +2,14 @@ package stud.team.pwsbackend.controller.http;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import stud.team.pwsbackend.domain.Vote;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.service.StreamService;
 import stud.team.pwsbackend.service.VoteService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/streams",
@@ -122,6 +124,11 @@ public class StreamController {
     @GetMapping("/{streamId}/fullPlaylist")
     public List<VideoWithNumb> getFullPlaylistByStream(@PathVariable Long streamId) throws Exception {
         return streamService.getFullPlaylistByStream(streamId);
+    }
+
+    @GetMapping("/{streamId}/activeVote")
+    public VoteDto getActiveVoteByStream(@PathVariable Long streamId) throws Exception {
+        return streamService.getActiveVoteByStream(streamId);
     }
 
 }

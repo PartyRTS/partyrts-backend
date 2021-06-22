@@ -2,19 +2,20 @@ package stud.team.pwsbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
-import stud.team.pwsbackend.mapper.VoteAddMapper;
 import stud.team.pwsbackend.mapper.VoteMapper;
-import stud.team.pwsbackend.mapper.VoteSkipMapper;
 import stud.team.pwsbackend.repository.*;
 import stud.team.pwsbackend.service.StreamService;
 import stud.team.pwsbackend.service.VoteService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class VoteServiceImpl implements VoteService {
 
     private VoteRepository voteRepository;

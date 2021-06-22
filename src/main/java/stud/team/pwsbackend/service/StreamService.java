@@ -36,6 +36,10 @@ public interface StreamService {
 
     List<VoteSkipDto> getAllVoteSkipByStream(Long streamId) throws Exception;
 
+    VoteDto getActiveVoteByStream(Long streamId) throws Exception;
+
+    boolean checkActiveVoteOnStream(Long streamId) throws Exception;
+
     void addCategoriesToStream(Long streamId,List<Long> categoriesId) throws Exception;
 
     void addUserToStream(Long streamId,Long userId) throws Exception;
