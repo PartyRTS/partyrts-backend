@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 
@@ -27,7 +28,7 @@ public class StreamDto {
 
     private Boolean stopStream;
 
-    private LocalTime timeStream;
+    private LocalDate createDate;
 
     private Integer fullUsers;
 

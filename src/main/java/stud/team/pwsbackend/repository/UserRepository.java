@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where (upper(u.firstName) like concat('%', upper(?1), '%')) or" +
             "(upper(u.secondName) like concat('%', upper(?1), '%'))")
     List<User> findUserByName(String search);
+
+    @Query(value = "select count(u) , u.registrationDate from User u group by u.registrationDate")
+    List<Object []> findCountUserByRegisterDate();
 }

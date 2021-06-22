@@ -4,6 +4,7 @@ import lombok.Data;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,8 @@ public class Stream {
     @Column(name = "stop_stream")
     private Boolean stopStream;
 
-    @Column(name = "time_stream")
-    private LocalTime timeStream;
+    @Column(name = "create_date")
+    private LocalDate createDate = LocalDate.now();
 
     @Column(name = "full_users")
     private Integer fullUsers;

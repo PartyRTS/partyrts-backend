@@ -106,6 +106,13 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
+    public StreamDto setStopStream(Long streamId, boolean stop) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow();
+        stream.setStopStream(stop);
+        return streamMapper.streamToDto(stream);
+    }
+
+    @Override
     public MessageDto addMessageToStream(Long streamId, MessageDto messageDto) {
         var message = messageMapper.mapToEntity(messageDto);
         var stream = streamRepository.findById(streamId).orElseThrow();
