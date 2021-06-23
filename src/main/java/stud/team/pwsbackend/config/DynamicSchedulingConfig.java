@@ -50,11 +50,17 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
                     @Override
                     public void run() {
                         LocalDateTime time = LocalDateTime.now();
-                        for (Long vote : votesMap.keySet()) {
-                            if (0 >= Duration.between(time, votesMap.get(vote)).getSeconds()) {
-                                voteService.closeVoteById(vote);
-                                log.info("close vote: " + vote + " \n");
-                                votesMap.remove(vote);
+                        for (Long voteId : votesMap.keySet()) {
+                            if (0 >= Duration.between(time, votesMap.get(voteId)).getSeconds()) {
+                                voteService.closeVoteById(voteId);
+                                log.info("close vote: " + voteId + " \n");
+                                votesMap.remove(voteId);
+
+                                var vote = voteService.getVoteById(voteId);
+                                var streamId = vote.getIdStream();
+                                String topic = "/topic/streams/" + streamId + "/events";
+                                String message = "{\"type\": \"vote\"}";
+                                simpMessagingTemplate.convertAndSend(topic, message);
                             }
                         }
                     }
@@ -82,8 +88,8 @@ public class DynamicSchedulingConfig implements SchedulingConfigurer {
         );
     }
 
-    public void addVoteToMap(Long voteId,LocalDateTime time){
-        votesMap.put(voteId,time);
+    public void addVoteToMap(Long voteId, LocalDateTime time) {
+        votesMap.put(voteId, time);
         log.info("add vote to map with id: " + voteId + " \n");
     }
 }
