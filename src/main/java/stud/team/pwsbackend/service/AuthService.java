@@ -10,7 +10,6 @@ import stud.team.pwsbackend.dto.GlobalRoleDto;
 import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.NewUserDto;
 import stud.team.pwsbackend.dto.UserDto;
-import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.security.SimpleAuthentication;
 
@@ -29,12 +28,17 @@ public class AuthService {
         this.userGlobalRoleService = userGlobalRoleService;
     }
 
-    public Long login(LoginRequestDto loginRequestDto) throws IncorrectCredentialsException, UserNotFoundException {
+    public Long login(LoginRequestDto loginRequestDto) throws Exception {
         log.debug("try login user");
         UserDto userDto = userService.login(loginRequestDto);
 
         long userId = userDto.getIdUser();
         log.debug("user id: " + userId);
+
+        if (userDto.getBanned()) {
+            log.debug("user with id: {} banned!", userId);
+            throw new Exception("user is banned");
+        }
 
         List<GlobalRoleDto> globalRoles = userGlobalRoleService.getAllGlobalRoles(userId);
         List<GrantedAuthority> authorities = toGrantedAuthorities(globalRoles);

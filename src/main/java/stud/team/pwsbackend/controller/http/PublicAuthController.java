@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import stud.team.pwsbackend.dto.LoginRequestDto;
 import stud.team.pwsbackend.dto.NewUserDto;
-import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
 import stud.team.pwsbackend.security.JwtTokenProvider;
 import stud.team.pwsbackend.service.AuthService;
@@ -33,7 +32,7 @@ public class PublicAuthController {
 
     //TODO логику вынести в из контроллера?
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse res) throws UserNotFoundException, IncorrectCredentialsException {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse res) throws Exception {
         var userId = authService.login(loginRequestDto);
         var token = jwtTokenProvider.createToken(userId);
 
