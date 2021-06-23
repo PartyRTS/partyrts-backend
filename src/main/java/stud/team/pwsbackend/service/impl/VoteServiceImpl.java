@@ -1,13 +1,19 @@
 package stud.team.pwsbackend.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
 import stud.team.pwsbackend.domain.*;
-import stud.team.pwsbackend.dto.*;
+import stud.team.pwsbackend.dto.UserVoteDto;
+import stud.team.pwsbackend.dto.VideoWithNumb;
+import stud.team.pwsbackend.dto.VoteDto;
 import stud.team.pwsbackend.mapper.UserVoteMapper;
 import stud.team.pwsbackend.mapper.VoteMapper;
-import stud.team.pwsbackend.repository.*;
+import stud.team.pwsbackend.repository.InsertVideosRepository;
+import stud.team.pwsbackend.repository.UserRepository;
+import stud.team.pwsbackend.repository.UserVoteRepository;
+import stud.team.pwsbackend.repository.VoteRepository;
 import stud.team.pwsbackend.service.StreamService;
 import stud.team.pwsbackend.service.VoteService;
 
@@ -17,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Slf4j
 public class VoteServiceImpl implements VoteService {
 
     private VoteRepository voteRepository;
@@ -26,7 +33,7 @@ public class VoteServiceImpl implements VoteService {
     private StreamService streamService;
     private VoteMapper voteMapper;
     private UserVoteMapper userVoteMapper;
-
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public List<VoteDto> getAllVotes() {
@@ -75,7 +82,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public UserVoteDto addUserVoteToVote(Long voteId, UserVoteDto userVoteDto) throws Exception {
+    public UserVoteDto addUserVoteToVote(Long voteId, UserVoteDto userVoteDto) {
         Vote vote = voteRepository.findById(voteId).orElseThrow();
         User user = userRepository.findById(userVoteDto.getIdUser()).orElseThrow();
         UserVote userVote = new UserVote();
@@ -108,18 +115,24 @@ public class VoteServiceImpl implements VoteService {
                         insRepository.save(firstInsertVid.get());
                     }
                 }
-                if(i + 1 < videoList.size()){
-                    insertVideo.setNumberNextVideo(videoList.get(i+1).getNumberVideo());
-                    Optional<InsertVideos> firstInsertVid = insRepository.findByNumberCurrentVideo(stream.getIdStream(),videoList.get(i+1).getNumberVideo());
-                    if(firstInsertVid.isPresent()){
+                if (i + 1 < videoList.size()) {
+                    insertVideo.setNumberNextVideo(videoList.get(i + 1).getNumberVideo());
+                    Optional<InsertVideos> firstInsertVid = insRepository.findByNumberCurrentVideo(stream.getIdStream(), videoList.get(i + 1).getNumberVideo());
+                    if (firstInsertVid.isPresent()) {
                         firstInsertVid.get().setNumberPrevVideo(insertVideo.getNumberCurrentVideo());
                         insRepository.save(firstInsertVid.get());
                     }
-                    stream.setCurrentNumberVideo((long) (i+1));
-                }else{
+                    stream.setCurrentNumberVideo((long) (i + 1));
+                } else {
                     stream.setActiveStream(false);
                 }
                 insRepository.save(insertVideo);
+
+                log.info("asdsadsadasdjoipasjipowerrjgoiarejioerejogeooeg");
+                log.info(String.valueOf(stream.getIdStream()));
+                String topic = "/topic/streams/" + stream.getIdStream() + "/events";
+                String message = "{\"type\": \"next\"}";
+                simpMessagingTemplate.convertAndSend(topic, message);
             }
         }
     }
@@ -184,5 +197,10 @@ public class VoteServiceImpl implements VoteService {
     @Autowired
     public void setUserVoteMapper(UserVoteMapper userVoteMapper) {
         this.userVoteMapper = userVoteMapper;
+    }
+
+    @Autowired
+    public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 }
