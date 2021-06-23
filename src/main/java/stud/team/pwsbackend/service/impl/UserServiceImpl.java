@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public StreamDto getActiveStream(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        for (Stream stream : user.getStreams()) {
+        for (Stream stream : user.getUsersStreams()) {
             if (stream.getActiveStream()) {
                 return streamMapper.streamToDto(stream);
             }

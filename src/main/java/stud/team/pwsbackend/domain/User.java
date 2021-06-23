@@ -30,7 +30,7 @@ public class User {
     @Column(nullable = false)
     private String secondName;
 
-    private String logoUrl;
+    private String logoUrl = "https://chto-eto-takoe.ru/uryaimg/32574385521dd1847f7d1e5b940491ef.jpg";
 
     @Column(name = "banned")
     private Boolean banned = false;

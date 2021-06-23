@@ -46,11 +46,11 @@ public class StatisticService {
             for (Object[] object : result) {
                 Integer fullCount = 1;
                 if(object[0] != null){
-                    fullCount = ((BigInteger) object[0]).intValue();
+                    fullCount = Integer.parseInt(object[0].toString());
                 }
                 Integer authCount = 1;
                 if(object[1] != null){
-                    authCount =((BigInteger) object[1]).intValue();
+                    authCount =Integer.parseInt(object[1].toString());
                 }
                 String date = "";
                 if(object[2] != null){
@@ -87,11 +87,11 @@ public class StatisticService {
             for (Object[] object : result) {
                 Integer voteCount = 1;
                 if(object[0] != null){
-                    voteCount = ((BigDecimal) object[0]).intValue();
+                    voteCount = Integer.parseInt(object[0].toString());
                 }
                 Integer streamCount = 1;
                 if(object[1] != null){
-                    streamCount = ((BigInteger) object[1]).intValue();
+                    streamCount = Integer.parseInt(object[1].toString());
                 }
                 String date = "";
                 if(object[2] != null){
