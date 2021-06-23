@@ -102,7 +102,7 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
-    public StreamDto setStopStream(Long streamId, boolean stop) throws Exception {
+    public StreamDto setStopStream(Long streamId, boolean stop) {
         Stream stream = streamRepository.findById(streamId).orElseThrow();
         stream.setStopStream(stop);
         return streamMapper.streamToDto(stream);
@@ -159,6 +159,10 @@ public class StreamServiceImpl implements StreamService {
             voteAdd.setVote(vote);
             voteAddRepository.save(voteAdd);
             dynamicSchedulingConfig.addVoteToMap(vote.getIdVote(), LocalDateTime.now().plusMinutes(1));
+
+            String topic = "/topic/streams/" + streamId + "/events";
+            String message = "{\"type\": \"vote\"}";
+            simpMessagingTemplate.convertAndSend(topic, message);
         }else{
             throw new Exception("This stream already exist active vote.");
         }
@@ -177,6 +181,11 @@ public class StreamServiceImpl implements StreamService {
             voteSkip.setVote(vote);
             voteSkipRepository.save(voteSkip);
             dynamicSchedulingConfig.addVoteToMap(vote.getIdVote(), LocalDateTime.now().plusMinutes(1));
+
+
+            String topic = "/topic/streams/" + streamId + "/events";
+            String message = "{\"type\": \"vote\"}";
+            simpMessagingTemplate.convertAndSend(topic, message);
         }else{
             throw new Exception("This stream already exist active vote.");
         }
@@ -207,13 +216,13 @@ public class StreamServiceImpl implements StreamService {
     }
 
     @Override
-    public VoteDto getActiveVoteByStream(Long streamId) throws Exception {
+    public VoteDto getActiveVoteByStream(Long streamId) {
         Optional<Vote> vote = voteRepository.findActiveVoteByStream(streamId);
         return vote.map(value -> voteMapper.voteToDto(value)).orElse(null);
     }
 
     @Override
-    public boolean checkActiveVoteOnStream(Long streamId) throws Exception {
+    public boolean checkActiveVoteOnStream(Long streamId) {
         Optional<Vote> vote = voteRepository.findActiveVoteByStream(streamId);
         return vote.isPresent();
     }
