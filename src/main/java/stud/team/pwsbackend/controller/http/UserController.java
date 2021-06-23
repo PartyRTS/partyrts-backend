@@ -125,6 +125,11 @@ public class UserController {
         userService.setBanStatusByUser(userId, ban);
     }
 
+    @GetMapping("/{userId}/activeStream")
+    public StreamDto getActiveStream(@PathVariable long userId) throws UserNotFoundException {
+        return userService.getActiveStream(userId);
+    }
+
     @DeleteMapping("/{userId}/videos/{videoId}")
     public void deleteVideoByUser(@PathVariable long userId,@PathVariable  long videoId) throws UserNotFoundException {
         userService.deleteVideoByUser(userId,videoId);
