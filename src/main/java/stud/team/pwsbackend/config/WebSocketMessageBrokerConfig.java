@@ -17,7 +17,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import stud.team.pwsbackend.security.SimpleAuthentication;
 
@@ -26,7 +25,6 @@ import java.security.Key;
 import java.util.List;
 
 @Configuration
-@EnableWebSocketMessageBroker
 @Slf4j
 public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfigurer {
 

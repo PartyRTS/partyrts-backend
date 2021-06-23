@@ -21,7 +21,6 @@ import stud.team.pwsbackend.service.UserService;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -70,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(long userId, UpdatePasswordRequestDto updPassword) throws UserNotFoundException {
+    public void updatePassword(long userId, UpdatePasswordRequestDto updPassword) {
         var user = userRepository.findById(userId).orElseThrow();
 
         String hash = user.getPassword().getPasswordHash();
@@ -87,21 +86,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addRoleToUser(long userId, long roleId) throws UserNotFoundException {
+    public void addRoleToUser(long userId, long roleId) {
         var user = userRepository.findById(userId).orElseThrow();
         var role = globalRoleRepository.findById(roleId).orElseThrow();
         user.getGlobalRoles().add(role);
     }
 
     @Override
-    public void deleteRoleByUser(long userId, long roleId) throws UserNotFoundException {
+    public void deleteRoleByUser(long userId, long roleId) {
         var user = userRepository.findById(userId).orElseThrow();
         var role = globalRoleRepository.findById(roleId).orElseThrow();
         user.getGlobalRoles().remove(role);
     }
 
     @Override
-    public void setBanStatusByUser(long userId, boolean ban) throws UserNotFoundException {
+    public void setBanStatusByUser(long userId, boolean ban) {
         var user = userRepository.findById(userId).orElseThrow();
         user.setBanned(ban);
     }
@@ -146,16 +145,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<GlobalRoleDto> getAllRolesByUser(long userId) throws UserNotFoundException {
+    public List<GlobalRoleDto> getAllRolesByUser(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         return roleMapper.mapToDto(user.getGlobalRoles());
     }
 
     @Override
-    public StreamDto getActiveStream(long userId) throws UserNotFoundException {
+    public StreamDto getActiveStream(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        for(Stream stream : user.getStreams()){
-            if(stream.getActiveStream()){
+        for (Stream stream : user.getStreams()) {
+            if (stream.getActiveStream()) {
                 return streamMapper.streamToDto(stream);
             }
         }

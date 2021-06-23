@@ -18,6 +18,7 @@ public class WsStreamMessageController {
 
     @MessageMapping("/messages/send")
     public void sendMessage(MessageDto messageDto) {
+        log.info("received chat message by ws: {}", messageDto);
         long streamId = messageDto.getIdStream();
         streamService.addMessageToStream(streamId, messageDto);
     }
