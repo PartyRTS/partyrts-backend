@@ -115,7 +115,7 @@ public class VoteServiceImpl implements VoteService {
                         firstInsertVid.get().setNumberPrevVideo(insertVideo.getNumberCurrentVideo());
                         insRepository.save(firstInsertVid.get());
                     }
-                    stream.setCurrentNumberVideo(videoList.get(i+1).getIdVideo());
+                    stream.setCurrentNumberVideo((long) (i+1));
                 }else{
                     stream.setActiveStream(false);
                 }
