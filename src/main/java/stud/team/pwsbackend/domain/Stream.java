@@ -35,7 +35,7 @@ public class Stream {
     private LocalDate createDate = LocalDate.now();
 
     @Column(name = "full_users")
-    private Integer fullUsers;
+    private Integer fullUsers = 0;
 
     @Column(name = "current_number_video")
     private Long currentNumberVideo;

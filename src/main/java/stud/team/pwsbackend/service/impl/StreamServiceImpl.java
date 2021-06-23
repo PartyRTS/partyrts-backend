@@ -67,6 +67,7 @@ public class StreamServiceImpl implements StreamService {
         stream.setUser(user);
         stream.setPlaylist(playlist);
         stream.setActiveStream(true);
+        stream.setFullUsers(1);
         stream.setCurrentNumberVideo(playlist.getVideoHasPlaylists().get(0).getVideo().getIdVideo());
         stream = streamRepository.save(stream);
         return streamMapper.streamToDto(stream);
@@ -262,6 +263,12 @@ public class StreamServiceImpl implements StreamService {
         List<VideoHasPlaylist> videos = stream.getPlaylist().getVideoHasPlaylists();
         FullPlaylistUtil fullPlaylistUtil = new FullPlaylistUtil(insertVideos, videos, videoMapper);
         return fullPlaylistUtil.getFullPlaylist();
+    }
+
+    @Override
+    public void addWatcherToStream(Long streamId) throws Exception {
+        Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
+        stream.setFullUsers(stream.getFullUsers() + 1);
     }
 
 

@@ -50,4 +50,6 @@ public interface StreamService {
 
     List<VideoWithNumb> getFullPlaylistByStream(Long streamId) throws Exception;
 
+    void addWatcherToStream(Long streamId) throws Exception;
+
 }

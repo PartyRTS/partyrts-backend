@@ -131,4 +131,9 @@ public class StreamController {
         return streamService.getActiveVoteByStream(streamId);
     }
 
+    @PutMapping("/{streamId}/addWatcher")
+    public void addWatcherToStream(@PathVariable Long streamId) throws Exception {
+        streamService.addWatcherToStream(streamId);
+    }
+
 }
