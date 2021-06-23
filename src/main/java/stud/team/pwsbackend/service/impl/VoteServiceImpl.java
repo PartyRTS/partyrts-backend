@@ -66,9 +66,9 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public double getPercentPlusVotes(Long voteId) throws Exception {
         Vote vote = voteRepository.findById(voteId).orElseThrow(Exception::new);
-        int usersCount = vote.getStream().getUsers().size() + 1;
+        int usersCount = vote.getUserVotes().size();
         Long plusCount = userVoteRepository.findCountPlusVotes(voteId);
-        if(plusCount != null){
+        if(plusCount != null && usersCount > 0){
             return (double) plusCount/usersCount;
         }
         return 0;

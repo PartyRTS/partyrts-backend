@@ -234,10 +234,12 @@ public class StreamServiceImpl implements StreamService {
     public void addUserToStream(Long streamId, Long userId) throws Exception {
         Stream stream = streamRepository.findById(streamId).orElseThrow(Exception::new);
         User user = userRepository.findById(userId).orElseThrow(Exception::new);
-        stream.getUsers().add(user);
-        streamRepository.save(stream);
-        user.getStreams().add(stream);
-        userRepository.save(user);
+        if(!stream.getUsers().contains(user)){
+            stream.getUsers().add(user);
+            streamRepository.save(stream);
+            user.getStreams().add(stream);
+            userRepository.save(user);
+        }
     }
 
     @Override
