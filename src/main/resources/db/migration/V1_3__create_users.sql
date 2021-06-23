@@ -18,3 +18,7 @@ VALUES ('1995-05-29','I am simple user.','cheryl@mail.ru','Cheryl','https://chto
 
 INSERT INTO user_has_global_roles (id_user, id_global_role)
 VALUES (1,2),(1,3),(2,1),(3,1),(4,1),(5,1),(6,1);
+
+INSERT INTO user_has_friends(
+	id_user, id_friend)
+	VALUES (1,2),(2,1),(1,3),(3,1),(1,4),(4,1),(2,4),(4,2);
