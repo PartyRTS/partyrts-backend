@@ -4,6 +4,8 @@ package stud.team.pwsbackend.controller.http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import stud.team.pwsbackend.domain.User;
+import stud.team.pwsbackend.domain.Video;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
@@ -121,5 +123,15 @@ public class UserController {
     @PutMapping("/{userId}/ban")
     public void setBanStatusByUser(@PathVariable long userId, @RequestBody boolean ban) throws UserNotFoundException {
         userService.setBanStatusByUser(userId, ban);
+    }
+
+    @DeleteMapping("/{userId}/videos/{videoId}")
+    public void deleteVideoByUser(@PathVariable long userId,@PathVariable  long videoId) throws UserNotFoundException {
+        userService.deleteVideoByUser(userId,videoId);
+    }
+
+    @DeleteMapping("/{userId}/playlists/{playlistId}")
+    public void deletePlaylistByUser(@PathVariable long userId,@PathVariable  long playlistId) throws UserNotFoundException {
+        userService.deletePlaylistByUser(userId,playlistId);
     }
 }

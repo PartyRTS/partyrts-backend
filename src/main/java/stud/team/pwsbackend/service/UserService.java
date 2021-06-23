@@ -41,4 +41,8 @@ public interface UserService {
     List<GlobalRoleDto> getAllRolesByUser(long userId) throws UserNotFoundException;
 
     StreamDto getActiveStream(long userId) throws UserNotFoundException;
+
+    void deleteVideoByUser(long userId,long videoId) throws UserNotFoundException;
+
+    void deletePlaylistByUser(long userId,long playlistId) throws UserNotFoundException;
 }

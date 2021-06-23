@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import stud.team.pwsbackend.domain.Password;
-import stud.team.pwsbackend.domain.Stream;
-import stud.team.pwsbackend.domain.User;
+import stud.team.pwsbackend.domain.*;
 import stud.team.pwsbackend.dto.*;
 import stud.team.pwsbackend.exception.message.IncorrectCredentialsException;
 import stud.team.pwsbackend.exception.user.UserNotFoundException;
@@ -15,7 +13,9 @@ import stud.team.pwsbackend.mapper.GlobalRoleMapper;
 import stud.team.pwsbackend.mapper.StreamMapper;
 import stud.team.pwsbackend.mapper.UserMapper;
 import stud.team.pwsbackend.repository.GlobalRoleRepository;
+import stud.team.pwsbackend.repository.PlaylistRepository;
 import stud.team.pwsbackend.repository.UserRepository;
+import stud.team.pwsbackend.repository.VideoRepository;
 import stud.team.pwsbackend.service.UserService;
 
 import javax.transaction.Transactional;
@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private GlobalRoleRepository globalRoleRepository;
+    private VideoRepository videoRepository;
+    private PlaylistRepository playlistRepository;
     private UserMapper userMapper;
     private GlobalRoleMapper roleMapper;
     private StreamMapper streamMapper;
@@ -161,6 +163,22 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public void deleteVideoByUser(long userId, long videoId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow();
+        Video video = videoRepository.findById(videoId).orElseThrow();
+        user.getUserVideos().remove(video);
+        video.setUser(null);
+    }
+
+    @Override
+    public void deletePlaylistByUser(long userId, long playlistId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow();
+        Playlist playlist = playlistRepository.findById(playlistId).orElseThrow();
+        user.getUserPlaylists().remove(playlist);
+        playlist.setUser(null);
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -179,6 +197,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setGlobalRoleRepository(GlobalRoleRepository globalRoleRepository) {
         this.globalRoleRepository = globalRoleRepository;
+    }
+
+    @Autowired
+    public void setVideoRepository(VideoRepository videoRepository) {
+        this.videoRepository = videoRepository;
+    }
+
+    @Autowired
+    public void setPlaylistRepository(PlaylistRepository playlistRepository) {
+        this.playlistRepository = playlistRepository;
     }
 
     @Autowired

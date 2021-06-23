@@ -65,6 +65,7 @@ public class UploadContentService {
         return urlpreview;
     }
 
+
     @Autowired
     public void setS3client(@Value("${endpoint.accessKey}") String accessKey, @Value("${endpoint.secretKey}") String secretKey) {
         this.s3client = AmazonS3ClientBuilder
