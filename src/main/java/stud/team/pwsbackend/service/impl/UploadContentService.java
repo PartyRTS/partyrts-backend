@@ -14,6 +14,7 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import stud.team.pwsbackend.domain.User;
@@ -27,16 +28,16 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 @Service
+@Profile("!test")
 public class UploadContentService {
     private UserRepository userRepository;
     private VideoRepository videoRepository;
     private final String awsS3Logo = "https://logouserbucket.s3-us-west-2.amazonaws.com/";
     private final String awsS3Video = "https://videousersbucket.s3-us-west-2.amazonaws.com/";
-    private String bucketLogoName = "logouserbucket";
-    private String bucketVideoName = "videousersbucket";
+    private final String bucketLogoName = "logouserbucket";
+    private final String bucketVideoName = "videousersbucket";
     private AmazonS3 s3client;
 
     @Value("${ffmpeg.ffmpeg_path}")

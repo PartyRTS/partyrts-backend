@@ -1,5 +1,6 @@
 package stud.team.pwsbackend.controller.http;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/aws")
+@Profile("!test")
 public class UploadContentController {
     private final UploadContentService uploadContentService;
 
