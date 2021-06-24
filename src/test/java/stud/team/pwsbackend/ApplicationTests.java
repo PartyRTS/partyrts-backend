@@ -1,13 +1,14 @@
 package stud.team.pwsbackend;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.assertj.core.api.Assertions.assertThat;
+
 class ApplicationTests {
 
     @Test
-    void contextLoads() {
+    void simpleTest() {
+        assertThat(2 + 2).isEqualTo(4);
     }
 
 }
