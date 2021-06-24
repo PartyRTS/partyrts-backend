@@ -85,7 +85,7 @@ public class UploadContentService {
         return urlpreview;
     }
 
-    public String uploadVideo(long videoId,MultipartFile file) throws IOException {
+    public String uploadVideo(long videoId, MultipartFile file) throws IOException {
         Video video = videoRepository.findById(videoId).orElseThrow();
         Files.createDirectory(Paths.get(inputDirectory + "/" + videoId));
         Files.createDirectory(Paths.get(outputDirectory + "/" + videoId));
@@ -120,7 +120,7 @@ public class UploadContentService {
                 .setVideoCodec("h264")     // Video using x264
                 .setVideoFrameRate(60, 1)     // at 24 frames per second
                 .setVideoResolution(1280, 720) // at 1280x720 resolution
-                .addExtraArgs(new String[]{"-hls_playlist_type", "vod","-hls_time", "6"})
+                .addExtraArgs(new String[]{"-hls_playlist_type", "vod", "-hls_time", "6"})
                 .done();
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
         executor.createJob(builder).run();
@@ -137,12 +137,13 @@ public class UploadContentService {
                         pathKey,
                         new FileInputStream(fileHls), metadata)
                         .withAccessControlList(s3client.getBucketAcl(bucketVideoName)));
-                if(FilenameUtils.getExtension(fileHls.getName()).equals("m3u8")){
+                if (FilenameUtils.getExtension(fileHls.getName()).equals("m3u8")) {
                     resultManifest = awsS3Video + pathKey;
                 }
             }
         }
         video.setVideoUrl(resultManifest);
+        videoRepository.save(video);
         return resultManifest;
     }
 
