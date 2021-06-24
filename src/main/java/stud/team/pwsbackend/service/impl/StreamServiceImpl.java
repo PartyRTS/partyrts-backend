@@ -68,7 +68,7 @@ public class StreamServiceImpl implements StreamService {
         stream.setPlaylist(playlist);
         stream.setActiveStream(true);
         stream.setFullUsers(1);
-        stream.setCurrentNumberVideo(playlist.getVideoHasPlaylists().get(0).getVideo().getIdVideo());
+        stream.setCurrentNumberVideo(0L);
         stream = streamRepository.save(stream);
         return streamMapper.streamToDto(stream);
     }

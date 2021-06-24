@@ -126,6 +126,11 @@
             <artifactId>aws-java-sdk-core</artifactId>
             <version>1.11.986</version>
         </dependency>
+        <dependency>
+            <groupId>net.bramp.ffmpeg</groupId>
+            <artifactId>ffmpeg</artifactId>
+            <version>0.6.2</version>
+        </dependency>
     </dependencies>
 
     <build>

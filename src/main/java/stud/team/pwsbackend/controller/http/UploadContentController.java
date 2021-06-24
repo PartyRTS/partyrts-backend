@@ -26,4 +26,9 @@ public class UploadContentController {
     public String uploadPreviewVideo(@PathVariable long videoId, @RequestPart("file") MultipartFile file) throws IOException {
         return uploadContentService.uploadPreviewVideo(videoId, file);
     }
+
+    @PostMapping(path = "/{videoId}/video", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String uploadVideo(@PathVariable long videoId,@RequestPart("file") MultipartFile file) throws IOException {
+        return uploadContentService.uploadVideo(videoId,file);
+    }
 }
